@@ -1,6 +1,6 @@
 
 import './App.css';
-import ProjectView from './pages/ProjectView';
+import {ProjectView} from './pages/ProjectView';
 import {Upload} from './pages/Upload';
 import Home from './pages/home';
 
