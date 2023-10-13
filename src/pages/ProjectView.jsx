@@ -7,7 +7,7 @@ export const ProjectView = () => {
   let demoProjects = [1, 2, 3, 4, 5];
 
   return (
-    <div className=" h-[100vh] border-2 border-black">
+    <div className="">
       Project View
 
       
