@@ -12,6 +12,7 @@ import { ProjectView } from './pages/ProjectView';
 import { Upload } from './pages/Upload';
 import { Welcome } from './pages/Welcome';
 import Home from './pages/home';
+import { ProjectFull } from './components/ProjectFull';
 
 
 const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
     path: "/test",
     element:  <Home></Home>
   },
+  {
+    path: "/fullProjectView",
+    element: <ProjectFull></ProjectFull>
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
