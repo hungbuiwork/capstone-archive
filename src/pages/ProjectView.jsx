@@ -5,15 +5,13 @@ import { collection, doc, getDocs, query } from "@firebase/firestore";
 import { firestore } from "../firebase";
 
 export const ProjectView = () => {
-
-  const [projectIDs, setProjectIDs] = useState([]);
+  const [projectIDs, setProjectIDs] = useState(["dummyData"]);
 
   const q = query(collection(firestore, "projects"));
 
   /* Load all project IDs into a list, and update the state of projectIDs */
-  
 
-  useEffect(()=>{
+  useEffect(() => {
     const handleLoad = async (e) => {
       let docs = getDocs(q);
       let projectsIDs_temp = [];
@@ -22,16 +20,19 @@ export const ProjectView = () => {
     };
 
     handleLoad().catch(console.error);
-  }, [q, projectIDs, setProjectIDs] )
+  }, [q, projectIDs, setProjectIDs]);
 
   return (
     <div className="">
-      Project View
       {/* Search/filters here*/}
-      <form className=" flex justify-center" action="#">
-        <div className="m-2">
-          <label> Field: </label>
-          <select className=" border-2 border-black" name="languages" id="lang">
+      <form className=" flex justify-center flex-wrap" action="#">
+        <div className="m-2 flex flex-col">
+          <label className=" font-bold"> SPONSORS </label>
+          <select
+            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold"
+            name="languages"
+            id="lang"
+          >
             {/* Dynamically load options later on based on the data*/}
             <option value="javascript">Biomedical</option>
             <option value="php">Game development</option>
@@ -39,9 +40,13 @@ export const ProjectView = () => {
           </select>
         </div>
 
-        <div className="m-2">
-          <label> Company: </label>
-          <select className=" border-2 border-black" name="languages" id="lang">
+        <div className="m-2 flex flex-col">
+          <label className=" font-bold"> DEPARTMENTS </label>
+          <select
+            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold"
+            name="languages"
+            id="lang"
+          >
             {/* Dynamically load options later on based on the data*/}
             <option value="javascript">JavaScript</option>
             <option value="php">PHP</option>
@@ -49,30 +54,31 @@ export const ProjectView = () => {
           </select>
         </div>
 
-        <div className="m-2">
-          <label> Year: </label>
-          <select className=" border-2 border-black" name="languages" id="lang">
+        <div className="m-2 flex flex-col">
+          <label className=" font-bold"> YEAR </label>
+          <select
+            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold"
+            name="languages"
+            id="lang"
+          >
             {/* Dynamically load options later on based on the data*/}
             <option value="javascript">JavaScript</option>
             <option value="php">PHP</option>
             <option value="java">Java</option>
           </select>
         </div>
-
-        <input
-          className=" border-2 border-black px-2"
-          type="submit"
-          value="Submit"
-        />
+        <div className=" m-2 flex flex-col justify-end">
+          <input
+            className="rounded-md border-[1.5px] border-blue-600 bg-blue-600 hover:bg-transparent hover:text-blue-600 duration-300 w-48 p-2 font-semibold text-white"
+            type="submit"
+            value="SEARCH"
+          />
+        </div>
       </form>
 
-
-
-
       {/*Load projects dynamically based on form information */}
-      
-      <div className=" m-4 border-black border-2">
-        <h1>Project Area</h1>
+
+      <div className=" m-4 border-2 border-[#C4C4C4] rounded-2xl flex flex-wrap">
         {projectIDs.map((projectID, i) => (
           <Project projectKey={projectID} key={i}></Project>
         ))}
