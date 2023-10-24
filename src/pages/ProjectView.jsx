@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Project } from "../components/Project";
 import { collection, doc, getDocs, query } from "@firebase/firestore";
 import { firestore } from "../firebase";
@@ -11,13 +11,18 @@ export const ProjectView = () => {
   const q = query(collection(firestore, "projects"));
 
   /* Load all project IDs into a list, and update the state of projectIDs */
-  const handleLoad = async (e) => {
-    let docs = getDocs(q);
-    let projectsIDs_temp = [];
-    (await docs).forEach((doc) => projectsIDs_temp.push(doc.id));
-    await setProjectIDs(projectsIDs_temp);
-  };
-  handleLoad();
+  
+
+  useEffect(()=>{
+    const handleLoad = async (e) => {
+      let docs = getDocs(q);
+      let projectsIDs_temp = [];
+      (await docs).forEach((doc) => projectsIDs_temp.push(doc.id));
+      await setProjectIDs(projectsIDs_temp);
+    };
+
+    handleLoad().catch(console.error);
+  }, [q, projectIDs, setProjectIDs] )
 
   return (
     <div className="">
