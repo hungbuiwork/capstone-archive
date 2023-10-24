@@ -13,6 +13,7 @@ import { Upload } from './pages/Upload';
 import { Welcome } from './pages/Welcome';
 import Home from './pages/home';
 import { ProjectFull } from './components/ProjectFull';
+import { Head } from './sections/Head';
 
 
 const router = createBrowserRouter([
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/view",
-    element:  <ProjectView></ProjectView>
+    element:  <div><Head></Head><ProjectView></ProjectView></div>
   },
   {
     path: "/submit",
