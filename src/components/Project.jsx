@@ -32,16 +32,23 @@ export const Project = (props) => {
       docRef = doc(firestore, "projects", projectKey);
       handleLoad();
     }
-  }, [data, setData, docRef]);
+  }, []);
 
   return (
-    <div className=" min-h-[32px] m-4 border-2 border-black">
-      {!data && <p> Error: Could not load data</p>}
-      HELLO HELLO HELLO
-      {data?.logoURL && <img src={data.logoURL}></img>}
-      <h1>{data?.company}</h1>
-      <h2>{data?.name}</h2>
-      <p>{data?.description}</p>
-    </div>
+      <a href = "/view" target = "_blank" className="xs:w-[80vw] sm:w-[40vw] lg:w-[28vw] m-4 border-2 rounded-lg p-6">
+        {!data && <p> Error: Could not load data</p>}
+        {(
+          <div className="  rounded-xl overflow-hidden aspect-square">
+            <img
+              className=" object-cover w-full h-full"
+              src={data.logoURL}
+            ></img>
+          </div>
+        )}
+        
+        <h1 className=" text-right text-xl font-bold leading-relaxed">{data?.company}</h1>
+        <h2 className=" text-center text-3xl font-extrabold">{data?.name}</h2>
+        <p className="">{data?.description}</p>
+    </a>
   );
 };

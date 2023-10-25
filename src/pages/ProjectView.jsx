@@ -5,22 +5,19 @@ import { collection, doc, getDocs, query } from "@firebase/firestore";
 import { firestore } from "../firebase";
 
 export const ProjectView = () => {
-  const [projectIDs, setProjectIDs] = useState(["dummyData"]);
-
-  const q = query(collection(firestore, "projects"));
-
+  const [projectIDs, setProjectIDs] = useState([]);
   /* Load all project IDs into a list, and update the state of projectIDs */
 
   useEffect(() => {
     const handleLoad = async (e) => {
-      let docs = getDocs(q);
+      let docs = getDocs(query(collection(firestore, "projects")));
       let projectsIDs_temp = [];
       (await docs).forEach((doc) => projectsIDs_temp.push(doc.id));
-      await setProjectIDs(projectsIDs_temp);
+      setProjectIDs(projectsIDs_temp);
     };
 
     handleLoad().catch(console.error);
-  }, [q, projectIDs, setProjectIDs]);
+  }, []);
 
   return (
     <div className="">
@@ -78,7 +75,7 @@ export const ProjectView = () => {
 
       {/*Load projects dynamically based on form information */}
 
-      <div className=" m-4 border-2 border-[#C4C4C4] rounded-2xl flex flex-wrap">
+      <div className=" m-4 border-2 border-[#C4C4C4] rounded-2xl flex flex-wrap justify-center">
         {projectIDs.map((projectID, i) => (
           <Project projectKey={projectID} key={i}></Project>
         ))}
