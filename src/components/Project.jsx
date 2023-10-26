@@ -1,41 +1,18 @@
 import React from "react";
-import { firestore } from "../firebase";
-import { collection, doc, getDoc } from "@firebase/firestore";
-import { useState, useEffect } from "react";
+
 export const Project = (props) => {
   /* Render only: 
   Title
   Company Logo
   Description
   Sponsor Name
+ */
+  const id = props.projectID;
+  const data = props.projectData;
 
-  projectKey is a prop (str) passed in, which is the document code used to access that project in the database.
-  */
-
-  /* Obtain the doc from firestore */
-
-  /* If given a projectKey as a prop, obtain that projects' information to store into "data" variable */
-  let docRef;
-  let projectKey = props.projectKey;
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    const handleLoad = async (e) => {
-      try {
-        await getDoc(docRef).then((projInfo) => setData(projInfo.data()));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (projectKey) {
-      docRef = doc(firestore, "projects", projectKey);
-      handleLoad();
-    }
-  }, []);
 
   return (
-      <a href = "/view" target = "_blank" className="xs:w-[80%] sm:w-[38%] lg:w-[25%] m-8 border-[2px] rounded-lg p-6 border-transparent shadow-none hover:shadow-[-1px_13px_74px_9px_rgba(3,10,40,0.28)] duration-300">
+      <a href = {`/view/${id}`} target = "_blank" className="xs:w-[80%] sm:w-[38%] lg:w-[25%] m-8 border-[2px] rounded-lg p-6 border-transparent shadow-none hover:shadow-[-1px_13px_74px_9px_rgba(3,10,40,0.28)] duration-300">
         {!data && <p> Error: Could not load data</p>}
         {
           <div className="  rounded-xl overflow-hidden aspect-square">

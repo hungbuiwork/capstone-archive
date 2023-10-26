@@ -26,6 +26,10 @@ const router = createBrowserRouter([
     element:  <div><Head></Head><ProjectView></ProjectView></div>
   },
   {
+    path: "/view/:projectID",
+    element: <div><Head></Head><ProjectFull></ProjectFull></div>
+  },
+  {
     path: "/submit",
     element:  <Upload></Upload>
   },
