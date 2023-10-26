@@ -35,20 +35,20 @@ export const Project = (props) => {
   }, []);
 
   return (
-      <a href = "/view" target = "_blank" className="xs:w-[80vw] sm:w-[40vw] lg:w-[28vw] m-4 border-2 rounded-lg p-6">
+      <a href = "/view" target = "_blank" className="xs:w-[80%] sm:w-[38%] lg:w-[25%] m-8 border-2 rounded-lg p-6">
         {!data && <p> Error: Could not load data</p>}
-        {(
+        {
           <div className="  rounded-xl overflow-hidden aspect-square">
             <img
               className=" object-cover w-full h-full"
-              src={data.logoURL}
+              src={data?.logoURL}
             ></img>
           </div>
-        )}
+        }
         
         <h1 className=" text-right text-xl font-bold leading-relaxed">{data?.company}</h1>
         <h2 className=" text-center text-3xl font-extrabold">{data?.name}</h2>
-        <p className="">{data?.description}</p>
+        <p className="">{"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." + data?.description}</p>
     </a>
   );
 };

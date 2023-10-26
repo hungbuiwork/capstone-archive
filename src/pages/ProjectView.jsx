@@ -5,6 +5,7 @@ import { collection, doc, getDocs, query } from "@firebase/firestore";
 import { firestore } from "../firebase";
 
 export const ProjectView = () => {
+
   const [projectIDs, setProjectIDs] = useState([]);
   /* Load all project IDs into a list, and update the state of projectIDs */
 
@@ -22,7 +23,7 @@ export const ProjectView = () => {
   return (
     <div className="">
       {/* Search/filters here*/}
-      <form className=" flex justify-center flex-wrap" action="#">
+      <form className=" flex justify-center flex-wrap mt-12" action="#">
         <div className="m-2 flex flex-col">
           <label className=" font-bold"> SPONSORS </label>
           <select
@@ -75,7 +76,7 @@ export const ProjectView = () => {
 
       {/*Load projects dynamically based on form information */}
 
-      <div className=" m-4 border-2 border-[#C4C4C4] rounded-2xl flex flex-wrap justify-center">
+      <div className=" m-4 border-2  rounded-2xl flex flex-wrap justify-center">
         {projectIDs.map((projectID, i) => (
           <Project projectKey={projectID} key={i}></Project>
         ))}
