@@ -21,13 +21,13 @@ export const ProjectView = () => {
   }, []);
 
   return (
-    <div className="">
+    <div className=" text-[#313144]">
       {/* Search/filters here*/}
       <form className=" flex justify-center flex-wrap mt-12" action="#">
         <div className="m-2 flex flex-col">
           <label className=" font-bold"> SPONSORS </label>
           <select
-            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold"
+            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
             name="languages"
             id="lang"
           >
@@ -41,7 +41,7 @@ export const ProjectView = () => {
         <div className="m-2 flex flex-col">
           <label className=" font-bold"> DEPARTMENTS </label>
           <select
-            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold"
+            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
             name="languages"
             id="lang"
           >
@@ -55,7 +55,7 @@ export const ProjectView = () => {
         <div className="m-2 flex flex-col">
           <label className=" font-bold"> YEAR </label>
           <select
-            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold"
+            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
             name="languages"
             id="lang"
           >
@@ -67,7 +67,7 @@ export const ProjectView = () => {
         </div>
         <div className=" m-2 flex flex-col justify-end">
           <input
-            className="rounded-md border-[1.5px] border-blue-600 bg-blue-600 hover:bg-transparent hover:text-blue-600 duration-300 w-48 p-2 font-semibold text-white"
+            className="rounded-md border-[1.5px] border-blue-600 bg-blue-600 hover:bg-transparent hover:text-blue-600 duration-300 w-48 p-2 font-semibold text-white cursor-pointer"
             type="submit"
             value="SEARCH"
           />
@@ -75,7 +75,7 @@ export const ProjectView = () => {
       </form>
 
       {/*Load projects dynamically based on form information */}
-
+      
       <div className=" m-4 border-2  rounded-2xl flex flex-wrap justify-center">
         {projectIDs.map((projectID, i) => (
           <Project projectKey={projectID} key={i}></Project>
