@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { firestore } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import ProjectCard from './ProjectCard'; // Import the ProjectCard component
 
-export const ProjectFull = (props) => {
-    /* This will be used to render the full project information. For now, just render all information from the project,
-    not focusing on UI
-    */
-    let projectKey = props.projectKey; 
-    /*Use the projectKey to locate the documents in firebase. */
+export const ProjectFull = () => {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const projectCollection = collection(firestore, 'projects');
+      const querySnapshot = await getDocs(projectCollection);
+      const projectData = querySnapshot.docs.map((doc) => doc.data());
+      setProjects(projectData);
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
-    <div>ProjectFull</div>
-  )
-}
+    <div>
+      {projects.map((project) => (
+        <ProjectCard key={project.id} project={project} />
+      ))}
+    </div>
+  );
+};
+
