@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {firestore} from '../firebase';
 import {addDoc,collection} from '@firebase/firestore';
 import {getSchoolYears, uploadFile, departments, quarters} from '../firebaseUtils';
+import { FormItem } from '../components/FormItem';
 
 export const Upload = () => {
     const refs = {
@@ -109,28 +110,77 @@ export const Upload = () => {
     };
     return (
         <div className="flex flex-col items-center justify-center space-y-4">
-            <form onSubmit={handleSave} className="flex flex-col items-center space-y-4">
-                <label>Enter Project Name</label>
-                <input type="text" ref={refs.name} className="border rounded px-2 py-1"></input>
+            <form onSubmit={handleSave} className="flex flex-col space-y-4">
+                {/*BASIC PROJECT INFO*/}
+                <h1 className=' font-extrabold text-2xl'>Project Information</h1>
+                <FormItem label = "Project Title" tooltip = "Help Me KMS">
+                    <input type="text" ref={refs.name} className="border rounded px-2 py-1" maxLength={50}></input>
+                </FormItem>
+                <FormItem label = "Project Description" tooltip = "Write a short description of your project!">
+                    <textarea ref={refs.description} className="border rounded px-2 py-1 h-20" maxLength={200}></textarea>
+                </FormItem>
+                <FormItem label = "Team Members" tooltip = "Separate names by comma">
+                    <textarea 
+                    ref={refs.teamMembers} 
+                    className="border rounded px-2 py-1 h-20"
+                    placeholder='John Doe, Sarah Davis, etc ...'
+                    ></textarea>
+                </FormItem>
+
+
+                {/*Course Information*/}
+                <h1 className=' font-extrabold text-2xl'>Course Information</h1>
+                <FormItem label = "Department" tooltip = "Select what department the course is in">
+                    <select value={state.selectedDepartment} onChange={handleDepartmentChange} className="border rounded px-2 py-1">
+                        {departments.map((department) => (
+                            <option key={department} value={department}>
+                            {department}
+                            </option>
+                        ))}
+                    </select>
+        
+                    {isOtherSelected && (
+                        <div>
+                            <label> Other : </label>
+                            <input type="text" value={state.otherDepartment} onChange={handleOtherDepartmentChange} className="border rounded px-2 py-1" />
+                        </div>
+                    )}
+                </FormItem>
+
+                <FormItem label = "SchoolYear" tooltip = "The schoolyear this project was worked on">
+                    <select value={state.selectedYear} onChange={(e) => setState(prevState => ({...prevState, selectedYear: e.target.value}))} className="border rounded px-2 py-1">
+                        {getSchoolYears().map((year) => (
+                            <option key={year} value={year}>
+                            {year}
+                            </option>
+                        ))}
+                    </select>
+                </FormItem>
+
+                <FormItem label = "Start Quarter">
+                    <select value={state.startQuarter} onChange={(e) => setState(prevState => ({...prevState, startQuarter: e.target.value}))} className="border rounded px-2 py-1">
+                        {quarters.map((quarter) => (
+                            <option key={quarter} value={quarter}>
+                            {quarter}
+                            </option>
+                        ))}
+                    </select>
+                </FormItem>
+
+                <FormItem label = "End Quarter">
+                    <select value={state.endQuarter} onChange={(e) => setState(prevState => ({...prevState, endQuarter: e.target.value}))} className="border rounded px-2 py-1">
+                        {quarters.map((quarter) => (
+                            <option key={quarter} value={quarter}>
+                            {quarter}
+                            </option>
+                        ))}
+                    </select>
+                </FormItem>
+
+                {/*Partner Information*/}
+                <h1 className=' font-extrabold text-2xl'>Partner Information</h1>
+
     
-                <label>Enter Team Members</label>
-                <textarea ref={refs.teamMembers} className="border rounded px-2 py-1 h-20"></textarea>
-    
-                <label>Choose Department</label>
-                <select value={state.selectedDepartment} onChange={handleDepartmentChange} className="border rounded px-2 py-1">
-                    {departments.map((department) => (
-                        <option key={department} value={department}>
-                        {department}
-                        </option>
-                    ))}
-                </select>
-    
-                {isOtherSelected && (
-                    <div>
-                        <label>Other Department</label>
-                        <input type="text" value={state.otherDepartment} onChange={handleOtherDepartmentChange} className="border rounded px-2 py-1" />
-                    </div>
-                )}
     
                 <label>Enter Faculty</label>
                 <textarea ref={refs.faculty} className="border rounded px-2 py-1 h-20"></textarea>
@@ -141,35 +191,6 @@ export const Upload = () => {
                 <label>Upload Company Logo</label>
                 <input type="file" onChange={(event) => {setState(prevState => ({...prevState, logoUpload: event.target.files[0]}))}} className="border rounded px-2 py-1"></input>
     
-                <label>Choose School Year</label>
-                <select value={state.selectedYear} onChange={(e) => setState(prevState => ({...prevState, selectedYear: e.target.value}))} className="border rounded px-2 py-1">
-                    {getSchoolYears().map((year) => (
-                        <option key={year} value={year}>
-                        {year}
-                        </option>
-                    ))}
-                </select>
-    
-                <label>Start Quarter</label>
-                <select value={state.startQuarter} onChange={(e) => setState(prevState => ({...prevState, startQuarter: e.target.value}))} className="border rounded px-2 py-1">
-                    {quarters.map((quarter) => (
-                        <option key={quarter} value={quarter}>
-                        {quarter}
-                        </option>
-                    ))}
-                </select>
-    
-                <label>End Quarter</label>
-                <select value={state.endQuarter} onChange={(e) => setState(prevState => ({...prevState, endQuarter: e.target.value}))} className="border rounded px-2 py-1">
-                    {quarters.map((quarter) => (
-                        <option key={quarter} value={quarter}>
-                        {quarter}
-                        </option>
-                    ))}
-                </select>
-    
-                <label>Enter Description</label>
-                <textarea ref={refs.description} className="border rounded px-2 py-1 h-20"></textarea>
     
                 <label>Upload Image</label>
                 <input type="file" onChange={(event) => {setState(prevState => ({...prevState, imageUpload: event.target.files[0]}))}} className="border rounded px-2 py-1"></input>
