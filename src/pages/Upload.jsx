@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {firestore} from '../firebase';
 import {addDoc,collection} from '@firebase/firestore';
 import {getSchoolYears, uploadFile, departments, quarters} from '../firebaseUtils';
+import { FormItem } from '../components/FormItem';
 
 export const Upload = () => {
     const refs = {
@@ -109,71 +110,102 @@ export const Upload = () => {
     };
     return (
         <div className="flex flex-col items-center justify-center space-y-4">
-            <form onSubmit={handleSave} className="flex flex-col items-center space-y-4">
-                <label>Enter Project Name</label>
-                <input type="text" ref={refs.name} className="border rounded px-2 py-1"></input>
+            <form onSubmit={handleSave} className="flex flex-col space-y-4">
+                {/*BASIC PROJECT INFO*/}
+                <h1 className=' font-extrabold text-2xl'>Project Information</h1>
+                <FormItem label = "Project Title" required>
+                    <input type="text" ref={refs.name} className="border rounded px-2 py-1" maxLength={50}></input>
+                </FormItem>
+                <FormItem label = "Project Description" tooltip = "Write a short description of your project!" required>
+                    <textarea ref={refs.description} className="border rounded px-2 py-1 h-20" maxLength={200}></textarea>
+                </FormItem>
+                <FormItem label = "Team Members" tooltip = "Separate names by comma" required>
+                    <textarea 
+                    ref={refs.teamMembers} 
+                    className="border rounded px-2 py-1 h-20"
+                    placeholder='John Doe, Sarah Davis, etc ...'
+                    ></textarea>
+                </FormItem>
+
+
+                {/*Course Information*/}
+                <h1 className=' font-extrabold text-2xl'>Course Information</h1>
+
+                <FormItem label = "Faculty Advisors" required>
+                    <textarea ref={refs.faculty} className="border rounded px-2 py-1 h-20" placeholder='Hadar Ziv, Shannon Alfaro, etc...'></textarea>
+                </FormItem>
+                <FormItem label = "Department" tooltip = "Select what department the course is in" required>
+                    <select value={state.selectedDepartment} onChange={handleDepartmentChange} className="border rounded px-2 py-1">
+                        {departments.map((department) => (
+                            <option key={department} value={department}>
+                            {department}
+                            </option>
+                        ))}
+                    </select>
+        
+                    {isOtherSelected && (
+                        <div>
+                            <label> Other : </label>
+                            <input type="text" value={state.otherDepartment} onChange={handleOtherDepartmentChange} className="border rounded px-2 py-1" />
+                        </div>
+                    )}
+                </FormItem>
+
+                <FormItem label = "SchoolYear" tooltip = "The schoolyear this project was worked on" required>
+                    <select value={state.selectedYear} onChange={(e) => setState(prevState => ({...prevState, selectedYear: e.target.value}))} className="border rounded px-2 py-1">
+                        {getSchoolYears().map((year) => (
+                            <option key={year} value={year}>
+                            {year}
+                            </option>
+                        ))}
+                    </select>
+                </FormItem>
+
+                <FormItem label = "Start Quarter" required>
+                    <select value={state.startQuarter} onChange={(e) => setState(prevState => ({...prevState, startQuarter: e.target.value}))} className="border rounded px-2 py-1">
+                        {quarters.map((quarter) => (
+                            <option key={quarter} value={quarter}>
+                            {quarter}
+                            </option>
+                        ))}
+                    </select>
+                </FormItem>
+
+                <FormItem label = "End Quarter" required>
+                    <select value={state.endQuarter} onChange={(e) => setState(prevState => ({...prevState, endQuarter: e.target.value}))} className="border rounded px-2 py-1">
+                        {quarters.map((quarter) => (
+                            <option key={quarter} value={quarter}>
+                            {quarter}
+                            </option>
+                        ))}
+                    </select>
+                </FormItem>
+
+                {/*Partner Information*/}
+                <h1 className=' font-extrabold text-2xl'>Partner Information</h1>
+
     
-                <label>Enter Team Members</label>
-                <textarea ref={refs.teamMembers} className="border rounded px-2 py-1 h-20"></textarea>
     
-                <label>Choose Department</label>
-                <select value={state.selectedDepartment} onChange={handleDepartmentChange} className="border rounded px-2 py-1">
-                    {departments.map((department) => (
-                        <option key={department} value={department}>
-                        {department}
-                        </option>
-                    ))}
-                </select>
+                <FormItem label = "Partner(Company)" tooltip = "The company in partnership with the project" required>
+                    <input type="text" ref={refs.company} className="border rounded px-2 py-1"></input>
+                </FormItem>
+
+                <FormItem label = "Partner Logo" tooltip = "Image URL to the company's logo" required>
+                    <input type="file" onChange={(event) => {setState(prevState => ({...prevState, logoUpload: event.target.files[0]}))}} className="border rounded px-2 py-1 file-input file-input-primary"></input>
+                </FormItem>
+
+                <FormItem label = "Partner Liaisons" tooltip = "Company employee worked with. Separate by comma." required>
+                    <textarea  className="border rounded px-2 py-1 h-20" placeholder='(currently nonfunctional) Jerry Joe, Bobby Balooza, etc...'></textarea>
+                </FormItem>
+
+                <h1 className=' font-extrabold text-2xl'>Other Project Information</h1>
     
-                {isOtherSelected && (
-                    <div>
-                        <label>Other Department</label>
-                        <input type="text" value={state.otherDepartment} onChange={handleOtherDepartmentChange} className="border rounded px-2 py-1" />
-                    </div>
-                )}
-    
-                <label>Enter Faculty</label>
-                <textarea ref={refs.faculty} className="border rounded px-2 py-1 h-20"></textarea>
-    
-                <label>Enter Company Name</label>
-                <input type="text" ref={refs.company} className="border rounded px-2 py-1"></input>
-    
-                <label>Upload Company Logo</label>
-                <input type="file" onChange={(event) => {setState(prevState => ({...prevState, logoUpload: event.target.files[0]}))}} className="border rounded px-2 py-1"></input>
-    
-                <label>Choose School Year</label>
-                <select value={state.selectedYear} onChange={(e) => setState(prevState => ({...prevState, selectedYear: e.target.value}))} className="border rounded px-2 py-1">
-                    {getSchoolYears().map((year) => (
-                        <option key={year} value={year}>
-                        {year}
-                        </option>
-                    ))}
-                </select>
-    
-                <label>Start Quarter</label>
-                <select value={state.startQuarter} onChange={(e) => setState(prevState => ({...prevState, startQuarter: e.target.value}))} className="border rounded px-2 py-1">
-                    {quarters.map((quarter) => (
-                        <option key={quarter} value={quarter}>
-                        {quarter}
-                        </option>
-                    ))}
-                </select>
-    
-                <label>End Quarter</label>
-                <select value={state.endQuarter} onChange={(e) => setState(prevState => ({...prevState, endQuarter: e.target.value}))} className="border rounded px-2 py-1">
-                    {quarters.map((quarter) => (
-                        <option key={quarter} value={quarter}>
-                        {quarter}
-                        </option>
-                    ))}
-                </select>
-    
-                <label>Enter Description</label>
-                <textarea ref={refs.description} className="border rounded px-2 py-1 h-20"></textarea>
-    
-                <label>Upload Image</label>
-                <input type="file" onChange={(event) => {setState(prevState => ({...prevState, imageUpload: event.target.files[0]}))}} className="border rounded px-2 py-1"></input>
-    
+                <FormItem label = "Project Image" tooltip = "A screenshot of your project.">
+                    <input type="file" onChange={(event) => {setState(prevState => ({...prevState, imageUpload: event.target.files[0]}))}} className=" file-input file-input-bordered file-input-primary border rounded px-2 py-1"></input>
+                </FormItem>
+
+
+                {/* For now no awards */}
                 {state.awardChecked && (
                     <div>
                         <label className="mr-2">Enter Award Name</label>
@@ -181,21 +213,28 @@ export const Upload = () => {
                     </div>
                 )}
 
-                <label>Upload Video</label>
-                <input type="file" onChange={(event) => {setState(prevState => ({...prevState, videoUpload: event.target.files[0]}))}} className="border rounded px-2 py-1"></input>
+                <FormItem label = "Project Video">
+                    <label className=''>Title</label>
+                    <input type="text" ref={refs.videoName} className="border rounded px-2 py-1"></input>
+                    <label className=''>Upload</label>
+                    <input type="file" onChange={(event) => {setState(prevState => ({...prevState, videoUpload: event.target.files[0]}))}} className="border rounded px-2 py-1 file-input file-input-bordered file-input-primary"></input>
+                </FormItem>
 
-                <label>Enter Video Name</label>
-                <input type="text" ref={refs.videoName} className="border rounded px-2 py-1"></input>
 
-                <label>Enter Misc. URL</label>
-                <input type="text" ref={refs.misc} className="border rounded px-2 py-1"></input>
+                <FormItem label = "Poster URL">
+                    <input type="text" ref={refs.poster} className="border rounded px-2 py-1"></input>
+                </FormItem>
+                
 
-                <label>Enter Poster URL</label>
-                <input type="text" ref={refs.poster} className="border rounded px-2 py-1"></input>
+                <FormItem label = "Slides URL">
+                    <input type="text" ref={refs.slide} className="border rounded px-2 py-1"></input>   
+                </FormItem>
+                
+                
+                <FormItem label = "Misc URL">
+                    <input type="text" ref={refs.misc} className="border rounded px-2 py-1"></input>
+                </FormItem>
 
-                <label>Enter Slides URL</label>
-                <input type="text" ref={refs.slide} className="border rounded px-2 py-1"></input>
-  
                 <button type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
             </form>
         </div>

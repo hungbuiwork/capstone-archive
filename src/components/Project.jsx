@@ -9,6 +9,10 @@ export const Project = (props) => {
  */
   const id = props.projectID;
   const data = props.projectData;
+  if (data?.partner){
+    console.log(data)
+  }
+
 
 
   return (
@@ -16,6 +20,7 @@ export const Project = (props) => {
         {!data && <p> Error: Could not load data</p>}
 
         <h1 className=" text-right text-lg font-bold leading-relaxed">{data?.company}</h1>
+        <h1> {data?.partner?.name}</h1>
 
         {
           <div className="  rounded-xl overflow-hidden aspect-square">
