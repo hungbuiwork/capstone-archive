@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@800&display=swap');
+
+.alex-font {
+  font-family: 'Alexandria', sans-serif;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -16,7 +24,27 @@ code {
     monospace;
 }
 
+.spaceLetters3 {
+  letter-spacing: 3px;
+}
+
+.box10 {
+  padding: 10px;
+}
+
+.closer-vertically {
+  margin-bottom: -5px;
+  /* Adjust the margin as needed */
+}
+
+.yellow-box {
+  background: rgba(255, 210, 0, 0.50);
+  width: 100%;
+  height: 0.350rem;
+  margin-top: 20px;
+}
 
 input, select, textarea {
   @apply border-[#C4C4C4];
 }
+
