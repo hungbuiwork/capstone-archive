@@ -5,7 +5,7 @@ export const Welcome = () => {
     <div className=" w-full h-[100vh] flex flex-row justify-center">
       <div className="m-auto flex flex-col place-self-center border-2 ">
         <h2 className="text-center text-4xl font-semibold">Welcome to the</h2>
-        <h1 className="text-center text-6xl font-extrabold hover:text-violet-700 duration-300">
+        <h1 className="text-center text-6xl font-extrabold hover:text-violet-700  duration-300">
           Capstone Project Archive
         </h1>
 
