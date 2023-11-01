@@ -26,17 +26,21 @@ const ProjectCard = ({ project }) => {
 
   const startDate = project.startDate?.toDate();
   const endDate = project.endDate?.toDate();
+  const companyName = project.company || 'N/A';
+  const department = project.department || 'N/A';
   const projectName = project.name || 'N/A';
   const description = project.description || 'N/A';
-  const partners = project.partners || 'N/A';
+  const videoName = project.videoName || 'N/A';
 
   return (
     <div style={cardStyles} className="project-card">
       <h2 style={titleStyles}>{projectName}</h2>
+      <p style={dateStyles}>Company: {companyName}</p>
+      <p style={dateStyles}>Department: {department}</p>
       <p style={dateStyles}>Start Date: {startDate ? startDate.toDateString() : 'N/A'}</p>
       <p style={dateStyles}>End Date: {endDate ? endDate.toDateString() : 'N/A'}</p>
       <p style={dateStyles}>Description: {description}</p>
-      <p style={dateStyles}>Partners: {partners}</p>
+      <p style={dateStyles}>Video Name: {videoName}</p>
     </div>
   );
 };

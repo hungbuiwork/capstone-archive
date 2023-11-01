@@ -1,28 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { firestore } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import ProjectCard from './ProjectCard'; // Import the ProjectCard component
+import { doc, getDoc } from 'firebase/firestore';
+import ProjectCard from './ProjectCard';
 
 export const ProjectFull = () => {
-  const [projects, setProjects] = useState([]);
+  const [searchedProject, setSearchedProject] = useState(null);
+  const [searchProjectId, setSearchProjectId] = useState('');
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const projectCollection = collection(firestore, 'projects');
-      const querySnapshot = await getDocs(projectCollection);
-      const projectData = querySnapshot.docs.map((doc) => doc.data());
-      setProjects(projectData);
-    };
+  const handleSearch = async () => {
+    if (searchProjectId === '') {
+      // Don't perform a search if the input is empty
+      return;
+    }
 
-    fetchProjects();
-  }, []);
+    const projectDoc = doc(firestore, 'projects', searchProjectId);
+    const docSnapshot = await getDoc(projectDoc);
+
+    if (docSnapshot.exists()) {
+      const projectData = docSnapshot.data();
+      setSearchedProject(projectData);
+    } else {
+      setSearchedProject(null);
+    }
+  };
 
   return (
     <div>
-      {projects.map((project) => (
-        <ProjectCard key={project.id} project={project} />
-      ))}
+      <div>
+        <input
+          type="text"
+          placeholder="Enter Document ID"
+          value={searchProjectId}
+          onChange={(e) => setSearchProjectId(e.target.value)}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
+
+      {searchedProject && <ProjectCard key={searchProjectId} project={searchedProject} />}
     </div>
   );
 };
-
