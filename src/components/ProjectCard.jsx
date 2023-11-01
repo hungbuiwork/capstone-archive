@@ -29,8 +29,21 @@ const ProjectCard = ({ project }) => {
   const companyName = project.company || 'N/A';
   const department = project.department || 'N/A';
   const projectName = project.name || 'N/A';
+  const teamMembers = project.teamMembers || 'N/A';
+  const faculty = project.faculty || 'N/A';
+  const course = project.course || 'N/A';
+  const schoolYear = project.schoolYear || 'N/A';
+  const startQuarter = project.startQuarter || 'N/A';
+  const endQuarter = project.endQuarter || 'N/A';
   const description = project.description || 'N/A';
+  const awards = project.awards || 'N/A';
+  const imageURL = project.imageURL || '';
   const videoName = project.videoName || 'N/A';
+  const videoURL = project.videoURL || '';
+  const companyLogoURL = project.companyLogo || '';
+  const miscURL = project.miscURL || '';
+  const posterURL = project.posterURL || '';
+  const slidesURL = project.slidesURL || '';
 
   return (
     <div style={cardStyles} className="project-card">
@@ -39,8 +52,56 @@ const ProjectCard = ({ project }) => {
       <p style={dateStyles}>Department: {department}</p>
       <p style={dateStyles}>Start Date: {startDate ? startDate.toDateString() : 'N/A'}</p>
       <p style={dateStyles}>End Date: {endDate ? endDate.toDateString() : 'N/A'}</p>
+      <p style={dateStyles}>Team Members: {teamMembers}</p>
+      <p style={dateStyles}>Faculty: {faculty}</p>
+      <p style={dateStyles}>Course: {course}</p>
+      <p style={dateStyles}>School Year: {schoolYear}</p>
+      <p style={dateStyles}>Start Quarter: {startQuarter}</p>
+      <p style={dateStyles}>End Quarter: {endQuarter}</p>
       <p style={dateStyles}>Description: {description}</p>
-      <p style={dateStyles}>Video Name: {videoName}</p>
+      <p style={dateStyles}>Awards: {awards}</p>
+      {videoURL !== 'N/A' ? (
+        <div>
+          <p style={dateStyles}>Video Name: {videoName}</p>
+          <p style={dateStyles}>Video:</p>
+          <iframe
+            title="Embedded Video"
+            width="560"
+            height="315"
+            src={videoURL}
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
+        </div>
+      ) : (
+        <p style={dateStyles}>Video: N/A</p>
+      )}
+      {imageURL && <img src={imageURL} alt="Project Image" style={{ maxWidth: '100%', height: 'auto' }} />}
+      {companyLogoURL && <img src={companyLogoURL} alt="Company Logo" style={{ maxWidth: '100%', height: 'auto' }} />}
+      {miscURL && (
+        <div>
+          <p style={dateStyles}>Misc URL:</p>
+          <a href={miscURL} target="_blank" rel="noopener noreferrer">
+            {miscURL}
+          </a>
+        </div>
+      )}
+      {posterURL && (
+        <div>
+          <p style={dateStyles}>Poster URL:</p>
+          <a href={posterURL} target="_blank" rel="noopener noreferrer">
+            {posterURL}
+          </a>
+        </div>
+      )}
+      {slidesURL && (
+        <div>
+          <p style={dateStyles}>Slides URL:</p>
+          <a href={slidesURL} target="_blank" rel="noopener noreferrer">
+            {slidesURL}
+          </a>
+        </div>
+      )}
     </div>
   );
 };
