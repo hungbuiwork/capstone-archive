@@ -1,42 +1,39 @@
-import React, { useState } from 'react';
-import { firestore } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import ProjectCard from './ProjectCard';
+import React, { useState } from "react";
+import { firestore } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import ProjectCard from "./ProjectCard";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export const ProjectFull = () => {
   const [searchedProject, setSearchedProject] = useState(null);
-  const [searchProjectId, setSearchProjectId] = useState('');
+  let {projectID} = useParams();
 
-  const handleSearch = async () => {
-    if (searchProjectId === '') {
-      // Don't perform a search if the input is empty
-      return;
-    }
+  useEffect(() => {
+    const handleSearch = async () => {
+      if (projectID === "") {
+        // Don't perform a search if the input is empty
+        return;
+      }
 
-    const projectDoc = doc(firestore, 'projects', searchProjectId);
-    const docSnapshot = await getDoc(projectDoc);
+      const projectDoc = doc(firestore, "projects", projectID);
+      const docSnapshot = await getDoc(projectDoc);
 
-    if (docSnapshot.exists()) {
-      const projectData = docSnapshot.data();
-      setSearchedProject(projectData);
-    } else {
-      setSearchedProject(null);
-    }
-  };
+      if (docSnapshot.exists()) {
+        const projectData = docSnapshot.data();
+        setSearchedProject(projectData);
+      } else {
+        setSearchedProject(null);
+      }
+    };
+    handleSearch();
+  }, []);
 
   return (
     <div>
-      <div>
-        <input
-          type="text"
-          placeholder="Enter Document ID"
-          value={searchProjectId}
-          onChange={(e) => setSearchProjectId(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
-      </div>
-
-      {searchedProject && <ProjectCard key={searchProjectId} project={searchedProject} />}
+      {searchedProject && (
+        <ProjectCard key={projectID} project={searchedProject} />
+      )}
     </div>
   );
 };
