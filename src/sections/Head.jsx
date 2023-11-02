@@ -5,18 +5,18 @@ export const Head = () => {
     <div className="">
       <div className="border-2 border-white h-32 flex flex-col justify-center">
         <div className=" flex justify-between border-2 border-white">
-          <div className=" flex border-2">
-            <h1 className="alex-font spaceLetters3 " style={{ color: '#0064a4', marginLeft: '50px', marginTop: '18px', fontSize: '80px' }}>UCI</h1>
+          <div className=" flex border-2  border-white">
+            <h1 className=" text-7xl alex-font tracking-wider text-[#0064a4] ml-12 mt-5" >UCI</h1>
             <div className=" flex flex-col justify-center ">
-              <h2 className="  alex-font closer-vertically" style={{ color: '#79B7FF', marginLeft: '50px', marginTop: '15px', fontSize: '35px' }}>CAPSTONE</h2>
-              <h2 className=" text-3xl alex-font closer-vertically" style={{ color: '#AED3FF', marginLeft: '50px', marginTop: '-9px' }} >ARCHIVE</h2>
+              <h2 className="  text-[#79B7FF] text-4xl alex-font mt-5 ml-12" >CAPSTONE</h2>
+              <h2 className=" text-[#AED3FF] text-3xl alex-font -mt-1 ml-12" >ARCHIVE</h2>
             </div>
           </div>
           <div>
           </div>
         </div>
       </div>
-      <div className="yellow-box">
+      <div class="bg-yellow-300 w-full h-1.5 mt-5">
       </div>
     </div>
   );
