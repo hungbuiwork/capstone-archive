@@ -1,93 +1,172 @@
-import React from "react";
-import { useState, useRef, useEffect } from "react";
-import { Project } from "../components/Project";
-import { collection, doc, getDocs, query } from "@firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase";
+import { Project } from "../components/Project";
 
 export const ProjectView = () => {
-  const [projectData, setProjectData] = useState({}); 
-  /* Dictionary of documentID: data*/
-  /* Load all project IDs into a list, and update the state of projectIDs */
+  const [projectData, setProjectData] = useState([]);
+  const [selectedSponsor, setSelectedSponsor] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
+  const [sponsors, setSponsors] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [years, setYears] = useState([]);
+
 
   useEffect(() => {
-    const handleLoad = async (e) => {
-      const documentSnapshot = getDocs(
-        query(collection(firestore, "projects"))
-      );
-      const hashMap = {};
+    const fetchUniqueValues = async () => {
 
-      (await documentSnapshot).forEach((doc) => {
+      const uniqueSponsors = new Set();
+      const uniqueDepartments = new Set();
+      const uniqueYears = new Set();
+
+      const querySnapshot = await getDocs(collection(firestore, "projects"));
+
+
+      querySnapshot.forEach((doc) => {
         const data = doc.data();
-        hashMap[doc.id] = data; // Use doc.id as the key
+        uniqueSponsors.add(data.sponsor);
+        uniqueDepartments.add(data.department);
+        uniqueYears.add(data.schoolYear); 
       });
 
-      setProjectData(hashMap);
-      console.log(hashMap);
+
+
+      const sortedSponsors = Array.from(uniqueSponsors).sort();
+
+      const sortedDepartments = Array.from(uniqueDepartments).sort();
+
+      const sortedYears = Array.from(uniqueYears).sort();
+
+
+      setSponsors(sortedSponsors);
+      setDepartments(sortedDepartments);
+      setYears(sortedYears); 
+
     };
 
-    handleLoad().catch(console.error);
+    fetchUniqueValues();
+
   }, []);
 
-  return (
-    <div className=" text-[#313144]">
-      {/* Search/filters here*/}
-      <form className=" flex justify-center flex-wrap mt-12" action="#">
+  useEffect(() => {
+    const handleLoad = async () =>
+    {
+      try{
+        let queryRef = query(collection(firestore, "projects"));
+
+        if (selectedSponsor){
+          queryRef = query(queryRef, where("sponsor", "==", selectedSponsor));
+        }
+
+        if (selectedDepartment){
+          queryRef = query(queryRef, where("department", "==", selectedDepartment));
+        }
+
+        if (selectedYear){
+          queryRef = query(queryRef, where("schoolYear", "==", selectedYear)); 
+        }
+
+
+
+        const documentSnapshot = await getDocs(queryRef);
+
+
+
+        const projects = documentSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+
+
+        setProjectData(projects);
+      } 
+      catch (error){
+        console.error("Error loading projects:", error);
+      }
+
+    };
+
+    handleLoad();
+  }, [selectedSponsor, selectedDepartment, selectedYear]);
+
+
+  return(
+    <div className="text-[#313144]">
+      <form className="flex justify-center flex-wrap mt-12" action="#">
         <div className="m-2 flex flex-col">
-          <label className=" font-bold"> SPONSORS </label>
+
+          <label className="font-bold">SPONSORS</label>
           <select
             className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
-            name="languages"
-            id="lang"
+            value={selectedSponsor}
+            onChange={(e) => setSelectedSponsor(e.target.value)}
           >
-            {/* Dynamically load options later on based on the data*/}
-            <option value="javascript">Biomedical</option>
-            <option value="php">Game development</option>
-            <option value="java">Etc.</option>
+            <option value="">All</option>
+            {sponsors.map((sponsor) => (
+              <option key={sponsor} value={sponsor}>
+                {sponsor}
+              </option>
+            ))}
           </select>
+
         </div>
 
         <div className="m-2 flex flex-col">
-          <label className=" font-bold"> DEPARTMENTS </label>
+          <label className="font-bold">DEPARTMENTS</label>
           <select
             className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
-            name="languages"
-            id="lang"
+            value={selectedDepartment}
+            onChange={(e) => setSelectedDepartment(e.target.value)}
           >
-            {/* Dynamically load options later on based on the data*/}
-            <option value="javascript">JavaScript</option>
-            <option value="php">PHP</option>
-            <option value="java">Java</option>
+            <option value="">All</option>
+            {departments.map((department) => (
+              <option key={department} value={department}>
+                {department}
+              </option>
+            ))}
           </select>
+
         </div>
 
         <div className="m-2 flex flex-col">
-          <label className=" font-bold"> YEAR </label>
+
+          <label className="font-bold">YEAR</label>
           <select
             className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
-            name="languages"
-            id="lang"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
           >
-            {/* Dynamically load options later on based on the data*/}
-            <option value="javascript">JavaScript</option>
-            <option value="php">PHP</option>
-            <option value="java">Java</option>
+            <option value="">All</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
           </select>
+
         </div>
-        <div className=" m-2 flex flex-col justify-end">
+
+        <div className="m-2 flex flex-col justify-end">
+
           <input
-            className="rounded-md border-[1.5px] border-blue-600 bg-blue-600 hover:bg-transparent hover:text-blue-600 duration-300 w-48 p-2 font-semibold text-white cursor-pointer"
+            className="rounded-md border-[1.5px] border-blue-600 bg-blue-600 hover:bg-transparent hover-text-blue-600 duration-300 w-48 p-2 font-semibold text-white cursor-pointer"
             type="submit"
-            value="SEARCH"
+            value="FILTER"
           />
         </div>
+
       </form>
 
-      {/*Load projects dynamically based on form information */}
+      <div className="m-4 border-2 rounded-2xl flex flex-wrap justify-center">
 
-      <div className=" m-4 border-2  rounded-2xl flex flex-wrap justify-center">
-        {Object.entries(projectData).map(([projectID, projectData], i) => (
-          <Project projectID={projectID} projectData = {projectData} key={i}></Project>
+
+        {projectData.map((project, i) => (
+          <Project projectID={project.id} projectData={project} key={i} />
         ))}
+
+
       </div>
     </div>
   );
