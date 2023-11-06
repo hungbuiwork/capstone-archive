@@ -9,30 +9,40 @@ export const Project = (props) => {
  */
   const id = props.projectID;
   const data = props.projectData;
-  if (data?.partner){
-    console.log(data)
+  if (data?.partner) {
+    console.log(data);
   }
 
-
-
   return (
-      <a href = {`/view/${id}`} className="xs:w-[80%] sm:w-[38%] lg:w-[25%] m-8 border-[2px] rounded-lg p-6 border-transparent shadow-none hover:shadow-[-1px_13px_74px_9px_rgba(3,10,40,0.28)] duration-300">
-        {!data && <p> Error: Could not load data</p>}
+    <a
+      href={`/view/${id}`}
+      className="xs:w-[80%] sm:w-[38%] lg:w-[25%] m-8 border-[2px] rounded-lg p-6 border-transparent shadow-none hover:shadow-[-1px_13px_74px_9px_rgba(3,10,40,0.28)] duration-300"
+    >
+      {!data && <p> Error: Could not load data</p>}
 
-        <h1 className=" text-right text-lg font-bold leading-relaxed">{data?.company}</h1>
-        <h1> {data?.partner?.name}</h1>
-
-        {
-          <div className="  rounded-xl overflow-hidden aspect-square">
+      {
+        <div className=" indicator flex-none w-auto">
+          <div className=" tooltip tooltip-left" data-tip = {data?.company}>
+            <div className="indicator-item indicator-top indicator-start border-2 rounded-lg border-gray-600 aspect-square w-16 hover:w-20 duration-300 overflow-hidden bg-white p-1 hover:p-0 ">
+              <img
+                className=" object-cover w-full h-full"
+                src={data?.logoURL || require("../assets/default.jpg")}
+                on
+              ></img>
+            </div>
+          </div>
+          <div className=" rounded-xl overflow-hidden aspect-square border-2 border-gray-300">
             <img
               className=" object-cover w-full h-full"
-              src={data?.logoURL}
+              src={data?.imageURL || require("../assets/default.jpg")}
+              on
             ></img>
           </div>
-        }
-        
-        <h2 className=" text-center text-3xl font-extrabold">{data?.name}</h2>
-        <p className="">{data?.description}</p>
+        </div>
+      }
+
+      <h2 className=" text-center text-3xl font-extrabold">{data?.name}</h2>
+      <p className="">{data?.description}</p>
     </a>
   );
 };
