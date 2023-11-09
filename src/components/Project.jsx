@@ -23,7 +23,7 @@ export const Project = (props) => {
       {
         <div className=" indicator flex-none w-auto">
           <div className=" tooltip tooltip-left" data-tip = {data?.company}>
-            <div className="indicator-item indicator-top indicator-start border-2 rounded-lg border-gray-600 aspect-square w-16 hover:w-20 duration-300 overflow-hidden bg-white p-1 hover:p-0 ">
+            <div className="indicator-item indicator-top indicator-start border-2 rounded-lg border-gray-600 aspect-square w-16 hover:w-20 duration-300 overflow-hidden bg-white p-0">
               <img
                 className=" object-cover w-full h-full"
                 src={data?.logoURL || require("../assets/default.jpg")}

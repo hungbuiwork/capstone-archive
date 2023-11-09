@@ -112,7 +112,7 @@ export const ProjectView = () => {
     <div className="text-[#313144]">
       <form className="flex justify-center flex-wrap mt-12" action="#">
         <div className="m-2 flex flex-col">
-          <label className="font-bold">SPONSORS</label>
+          <label className="font-bold">PARTNERS</label>
 
           <select
             className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
@@ -165,6 +165,18 @@ export const ProjectView = () => {
 
         </div>
 
+        <div className="m-2 flex flex-col">
+          <label className="font-bold">SEARCH</label>
+          <input
+          className="rounded-md border-[1.5px] border-[#C4C4C4] p-2 text-sm w-48"
+          type="text"
+          placeholder="Search by description"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+
+        </div>
+
         <div className="m-2 flex flex-col justify-end">
           <button
             className="rounded-md border-[1.5px] border-blue-600 bg-blue-600 hover-bg-transparent hover-text-blue-600 duration-300 w-48 p-2 font-semibold text-white cursor-pointer"
@@ -176,13 +188,6 @@ export const ProjectView = () => {
       </form>
 
       <div className="m-4">
-        <input
-          className="rounded-md border-[1.5px] border-[#C4C4C4] p-2 text-sm w-48"
-          type="text"
-          placeholder="Search by description"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
 
       </div>
 
