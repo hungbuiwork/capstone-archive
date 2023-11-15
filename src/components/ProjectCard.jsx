@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { firestore } from "../firebase";
-import { collection, query, where, getDocs, limit } from "firebase/firestore";
+import { collection, query, where, getDocs, limit} from "firebase/firestore";
 
 const ProjectCard = ({ project }) => {
   //Information about other projects
-  const [otherProjects, setOtherProjects] = useState([]);
+  const [otherProjectsByDepartment, setOtherProjectsByDepartment] = useState([]);
+  const [otherProjectsByCompany, setOtherProjectsByCompany] = useState([]);
+
 
   //Information about this project
   //TO ADD(cesar): separate summary & description, project liaisons, course
@@ -33,6 +35,7 @@ const ProjectCard = ({ project }) => {
   //Finds projects within the same department
   useEffect(() => {
     const fetchProjects = async () => {
+      //First, query projects by department
       const q = query(
         collection(firestore, "projects"),
         where("department", "==", department), //TODO(backend): build indexing to filter out the actual project
@@ -45,7 +48,24 @@ const ProjectCard = ({ project }) => {
         querySnapshot.forEach((doc) => {
           projects.push({ id: doc.id, ...doc.data() });
         });
-        setOtherProjects(projects);
+        setOtherProjectsByDepartment(projects);
+      } catch (error) {
+        console.error("Error fetching projects: ", error);
+      }
+
+      const q2 = query(
+        collection(firestore, "projects"),
+        where("company", "==", companyName), //TODO(backend): build indexing to filter out the actual project
+        limit(10)
+      );
+
+      try {
+        const querySnapshot = await getDocs(q2);
+        const projects = [];
+        querySnapshot.forEach((doc) => {
+          projects.push({ id: doc.id, ...doc.data() });
+        });
+        setOtherProjectsByCompany(projects);
       } catch (error) {
         console.error("Error fetching projects: ", error);
       }
@@ -61,9 +81,21 @@ const ProjectCard = ({ project }) => {
 
       {/*Render Other Projects*/}
       <div className=" flex flex-col">
-        <h1 className=" font-bold">Other "{department}" Projects</h1>
-        {otherProjects.length > 0 ? (
-          otherProjects.map((data) => 
+        <h1 className=" font-bold">Other projects partnered with "{companyName}"</h1>
+        {otherProjectsByCompany.length > 0 ? (
+          otherProjectsByCompany.map((data) => 
+          {
+            return <a key = {data.id} href = {`/view/${data.id}`} className=" text-blue-400 font-semibold hover:text-black">{data.name}</a>
+          })
+        ) : (
+          <p>No project data available</p>
+        )}
+      </div>
+
+      <div className=" flex flex-col">
+        <h1 className=" font-bold">Other projects in "{department}"</h1>
+        {otherProjectsByDepartment.length > 0 ? (
+          otherProjectsByDepartment.map((data) => 
           {
             return <a key = {data.id} href = {`/view/${data.id}`} className=" text-blue-400 font-semibold hover:text-black">{data.name}</a>
           })
