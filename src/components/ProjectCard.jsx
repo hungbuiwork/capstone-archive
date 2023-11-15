@@ -7,6 +7,7 @@ const ProjectCard = ({ project }) => {
   const [otherProjects, setOtherProjects] = useState([]);
 
   //Information about this project
+  //TO ADD(cesar): separate summary & description, project liaisons, course
   const startDate = project.startDate?.toDate();
   const endDate = project.endDate?.toDate();
   const companyName = project.company || "N/A";
