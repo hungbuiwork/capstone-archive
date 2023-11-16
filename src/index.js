@@ -14,6 +14,7 @@ import { Welcome } from './pages/Welcome';
 import Home from './pages/home';
 import { ProjectFull } from './components/ProjectFull';
 import { Head } from './sections/Head';
+import { VerifyProjects } from './pages/VerifyProjects';
 
 
 const router = createBrowserRouter([
@@ -40,7 +41,12 @@ const router = createBrowserRouter([
   {
     path: "/fullProjectView",
     element: <ProjectFull></ProjectFull>
-  }
+  },
+  {
+    path: "/verify",
+    element: <div><Head></Head><VerifyProjects></VerifyProjects></div>
+  },
+  
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
