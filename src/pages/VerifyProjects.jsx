@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { getFirestore, collection, getDocs } from "firebase/firestore"; // Assuming you have the appropriate imports
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+} from "firebase/firestore"; // Assuming you have the appropriate imports
 import { firestore } from "../firebase";
 import ProjectCard from "../components/ProjectCard";
 
 export const VerifyProjects = () => {
   const [projectsToReview, setProjectsToReview] = useState([]);
   const [currentProject, setCurrentProject] = useState();
+  const [feedbackText, setFeedbackText] = useState();
 
-  
   //Load Projects
   useEffect(() => {
     // Function to load all documents from the "projects" collection
@@ -20,10 +28,20 @@ export const VerifyProjects = () => {
         let projects = [];
         // Store documents in the projectsToReview list
         querySnapshot.forEach((doc) => {
-          projects.push({ id: doc.id, ...doc.data() });
+          const data = doc.data();
+
+          // Check if the "verified" field exists and its value is not true
+          if (
+            data.pendingVerification == null ||
+            data.pendingVerification == true
+          ) {
+            projects.push({ id: doc.id, ...data });
+          }
         });
-        setProjectsToReview(projects);
-        setCurrentProject(projectsToReview[0]);
+        setProjectsToReview((prevProjects) => {
+          setCurrentProject(projects[0] || null); // Set currentProject to the first project or null if no projects
+          return projects;
+        });
       } catch (error) {
         console.error("Error loading projects: ", error);
       }
@@ -33,47 +51,106 @@ export const VerifyProjects = () => {
     loadProjects();
   }, []); // Empty dependency array ensures the effect runs only once, similar to componentDidMount
 
-
-
-  const handleApprove = () => {
+  const handleApprove = async () => {
     //TODO: Handle the approve by doing a firebase update
-    //Remove the project from the queue
-    let projects = projectsToReview;
-    projects.shift();
-    setProjectsToReview(projects);
-    //Update the currentproject
-    setCurrentProject(projectsToReview[0]);
-  }
-  const handleDeny = () => {
-    //TODO: Handle the approve by doing a firebase update
-    //Remove the project from the queue
-    let projects = projectsToReview;
-    projects.shift();
-    setProjectsToReview(projects);
-    //Update the currentproject
-    setCurrentProject(projectsToReview[0]);
-  }
+    if (currentProject) {
+      try {
+        const projectDocRef = doc(firestore, "projects", currentProject.id);
+        await updateDoc(projectDocRef, {
+          verified: true,
+          pendingVerification: false,
+        });
+        //Remove the project from the queue
+        let projects = projectsToReview;
+        projects.shift();
+        setProjectsToReview(projects);
+        //Update the currentproject
+        setCurrentProject(projectsToReview[0]);
+        setFeedbackText(`✅Successfully APPROVED "${currentProject?.name}"`);
+      } 
+      catch (error) {
+        setFeedbackText(
+          `Failed to Approve "${currentProject?.name}"\n${error}`
+        );
+      }
+    }
+  };
+
+  const handleDeny = async () => {
+    //TODO: Handle the deny by doing a firebase update
+    if (currentProject) {
+      try {
+        const projectDocRef = doc(firestore, "projects", currentProject.id);
+        await updateDoc(projectDocRef, {
+          verified: false,
+          pendingVerification: false,
+        });
+        //Remove the project from the queue
+        let projects = projectsToReview;
+        projects.shift();
+        setProjectsToReview(projects);
+        //Update the currentproject
+        setCurrentProject(projectsToReview[0]);
+        setFeedbackText(`✅ Successfully DENIED "${currentProject?.name}"`);
+      } 
+      catch (error) {
+        setFeedbackText(
+          `Failed to Deny "${currentProject?.name}"\n${error}`
+        );
+      }
+    }
+  };
+
   const handleSkip = () => {
     //TODO: Handle the approve by doing a firebase update
     //Remove the project from the queue
     let projects = projectsToReview;
-    projects.shift();
+    let projectToShift = projects.shift();
+    projects.push(projectToShift);
+
     setProjectsToReview(projects);
     //Update the currentproject
     setCurrentProject(projectsToReview[0]);
-  }
+    setFeedbackText(`Skipped "${currentProject?.name}"`);
+  };
 
-  if (projectsToReview.length < 1){
-    return <div className=" font-bold text-center"> There are no more pending projects to review! You're all up to date</div>
+  if (projectsToReview.length < 1) {
+    return (
+      <div>
+        <h1 className=" font-bold text-center text-xl text-success">
+          {feedbackText}
+        </h1>
+        <h1 className=" font-bold text-center text-2xl">
+          There are no more pending projects to review! You're all up to date 
+        </h1>
+        <h2 className="text-9xl text-center">✅</h2>
+
+      </div>
+    );
   }
   return (
     <div>
       <div className=" flex justify-center">
-        <button className=" btn btn-success" onClick={handleApprove}>Approve</button>
-        <button className=" btn btn-error" onClick={handleDeny}>Deny</button>
-        <a className=" btn btn-warning" href = "www.google.com" target = "_blank">Modify </a>
-        <button className=" btn btn-ghost">Skip</button>
+        <button className=" btn btn-success m-2" onClick={handleApprove}>
+          Approve
+        </button>
+        <button className=" btn btn-error m-2" onClick={handleDeny}>
+          Deny
+        </button>
+        <a
+          className=" btn btn-warning m-2"
+          href={`https://console.firebase.google.com/u/0/project/capstone-archive/firestore/data/~2Fprojects~2F${currentProject.id}`}
+          target="_blank"
+        >
+          Modify{" "}
+        </a>
+        {projectsToReview.length > 1 && <button className=" btn btn-ghost m-2" onClick={handleSkip}>
+          Skip
+        </button>}
       </div>
+      <h1 className=" text-center text-xl font-bold text-success">
+        {feedbackText}
+      </h1>
       <ProjectCard project={currentProject} />
     </div>
   );
