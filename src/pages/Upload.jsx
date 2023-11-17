@@ -130,10 +130,10 @@ export const Upload = () => {
             console.log('Company Added');
             selectedCompanyValue = docRef.id;
         } else {
-            const selectedCompany = companies.find(company => company.name === selectedCompanyValue);
+            const selectedCompany = companies.find(company => company.companyName === selectedCompanyValue);
             companyData = selectedCompany;
-            selectedCompanyValue = companyData.id;
             console.log('Company: ', companyData);
+            selectedCompanyValue = companyData.id;
         }
 
         let data={
