@@ -39,18 +39,17 @@ export const Upload = () => {
 
     useEffect(() => {
         const fetchCompanies = async () => {
-          //const companiesCollection = collection(firestore, 'companies');
-          const querySnapshot = await getDocs(companiesRef);
-          const companiesData = [];
-          querySnapshot.forEach((doc) => {
-            companiesData.push({
-              id: doc.id,
-              companyName: doc.data().companyName,
-              logoURL: doc.data().logoURL,
-              companyURL: doc.data().companyURL,
+            const querySnapshot = await getDocs(companiesRef);
+            const companiesData = [];
+            querySnapshot.forEach((doc) => {
+                companiesData.push({
+                    id: doc.id,
+                    companyName: doc.data().companyName,
+                    logoURL: doc.data().logoURL,
+                    companyURL: doc.data().companyURL,
+                });
             });
-          });
-          setCompanies(companiesData);
+            setCompanies(companiesData);
         };
     
         fetchCompanies();
@@ -91,6 +90,13 @@ export const Upload = () => {
     const handleSave = async(e) => {
         e.preventDefault();
 
+        const existingCompany = companies.find(company => company.companyName === state.otherCompany);
+        
+        if (existingCompany) {
+            alert('Company with this name already exists. Please choose a different name.');
+            return;
+        }
+
         if (state.selectedDepartment === 'Select Department') {
             alert('Please select a department');
             return;
@@ -126,6 +132,14 @@ export const Upload = () => {
                 logoURL: logoUrl,
                 companyURL: refs.companyURL.current.value
             };
+
+            const existingCompany = companies.find(company => company.companyName === state.otherCompany);
+
+            if (existingCompany) {
+                alert('Company with this name already exists. Please choose a different name.');
+                return;
+            }
+
             const docRef = await addDoc(companiesRef, companyData);
             console.log('Company Added');
             selectedCompanyValue = docRef.id;
