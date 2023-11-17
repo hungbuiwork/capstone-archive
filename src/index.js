@@ -15,7 +15,7 @@ import Home from './pages/home';
 import { ProjectFull } from './components/ProjectFull';
 import { Head } from './sections/Head';
 import { VerifyProjects } from './pages/VerifyProjects';
-import ThankYou from './pages/ThankYou';
+import { ThankYou } from './pages/ThankYou';
 
 
 const router = createBrowserRouter([
@@ -48,10 +48,9 @@ const router = createBrowserRouter([
     element: <div><Head></Head><VerifyProjects></VerifyProjects></div>
   },
   {
-    path: "/thank-you",
-    element: <div><Head></Head><ThankYou></ThankYou></div>
+    path: "/thankYou",
+    element: <ThankYou></ThankYou>
   },
-  
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

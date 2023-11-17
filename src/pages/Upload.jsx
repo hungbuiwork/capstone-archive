@@ -3,6 +3,8 @@ import {firestore} from '../firebase';
 import {addDoc,collection, getDocs} from '@firebase/firestore';
 import {getSchoolYears, uploadFile, departments, quarters} from '../firebaseUtils';
 import { FormItem } from '../components/FormItem';
+import { useNavigate } from 'react-router-dom';
+
 
 export const Upload = () => {
     // Refs for form inputs
@@ -97,6 +99,8 @@ export const Upload = () => {
     const isOtherDeptSelected = state.selectedDepartment === 'Other';
     const isOtherCompSelected = state.selectedCompany === 'Add New Company';
 
+    const navigate = useNavigate();
+
     // Event handler for form submission
     const handleSave = async(e) => {
         e.preventDefault();
@@ -165,6 +169,7 @@ export const Upload = () => {
             companyData = selectedCompany;
             console.log('Company: ', companyData);
             selectedCompanyValue = companyData.id;
+            navigate('/thankYou');
         }
 
         // Data that will be submitted into the database
@@ -211,6 +216,7 @@ export const Upload = () => {
         try {
             await addDoc(projectsRef, data);
             console.log('Document successfully written!');
+            //navigate('/thankYou');
         } catch (error) {
             console.error('Error writing document:', error);
         }
