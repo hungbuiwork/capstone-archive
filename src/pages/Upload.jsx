@@ -5,23 +5,28 @@ import {getSchoolYears, uploadFile, departments, quarters} from '../firebaseUtil
 import { FormItem } from '../components/FormItem';
 
 export const Upload = () => {
+    // Refs for form inputs
     const refs = {
-      award: React.useRef(),
-      companyURL: React.useRef(),
-      description: React.useRef(),
-      faculty: React.useRef(),
-      liasons: React.useRef(),
-      misc: React.useRef(),
-      projectName: React.useRef(),
-      poster: React.useRef(),
-      slide: React.useRef(),
-      teamMembers: React.useRef(),
-      videoName: React.useRef()
+        award: React.useRef(),
+        companyURL: React.useRef(),
+        course: React.useRef(),
+        description: React.useRef(),
+        faculty: React.useRef(),
+        liasons: React.useRef(),
+        misc: React.useRef(),
+        projectName: React.useRef(),
+        poster: React.useRef(),
+        slide: React.useRef(),
+        summary: React.useRef(),
+        teamMembers: React.useRef(),
+        videoName: React.useRef()
     };
     
+    // Firestore collections
     const projectsRef = collection(firestore, 'projects');
     const companiesRef = collection(firestore, 'companies');
 
+    // State variables
     const [companies, setCompanies] = useState([]);
     const [state, setState] = useState({
         awardChecked: false,
@@ -37,6 +42,7 @@ export const Upload = () => {
         videoUpload: null
     });
 
+    // Fetch companies from Firestore on component mount
     useEffect(() => {
         const fetchCompanies = async () => {
             const querySnapshot = await getDocs(companiesRef);
@@ -55,6 +61,7 @@ export const Upload = () => {
         fetchCompanies();
       }, []);
 
+    // Event handler for department change
     const handleDepartmentChange = (e) => {
         const selectedValue = e.target.value;
         setState(prevState => ({...prevState, selectedDepartment: selectedValue}));
@@ -63,11 +70,12 @@ export const Upload = () => {
             setState(prevState => ({...prevState, otherDepartment: ''}));
         }
     };
-
+    // Event handler for other department change
     const handleOtherDepartmentChange = (e) => {
         setState(prevState => ({...prevState, otherDepartment: e.target.value}));
     };
 
+    // Event handler for company change
     const handleCompanyChange = (e) => {
         const selectedValue = e.target.value;
         const selectedCompany = companies.find(company => company.companyName === selectedValue);
@@ -80,23 +88,28 @@ export const Upload = () => {
         }
     };
 
+    // Event handler for other company change
     const handleOtherCompanyChange = (e) => {
         setState(prevState => ({...prevState, otherCompany: e.target.value}));
     };
-
+  
+    // Check if the selected department/company is 'Other'
     const isOtherDeptSelected = state.selectedDepartment === 'Other';
     const isOtherCompSelected = state.selectedCompany === 'Add New Company';
 
+    // Event handler for form submission
     const handleSave = async(e) => {
         e.preventDefault();
 
+        // Check if the company with the same name already exists
         const existingCompany = companies.find(company => company.companyName === state.otherCompany);
         
         if (existingCompany) {
             alert('Company with this name already exists. Please choose a different name.');
             return;
         }
-
+        
+        // Additional form validation checks...
         if (state.selectedDepartment === 'Select Department') {
             alert('Please select a department');
             return;
@@ -117,6 +130,7 @@ export const Upload = () => {
             return;
         }
 
+        // Logic for handling company data
         let selectedDepartmentValue = isOtherDeptSelected ? state.otherDepartment : state.selectedDepartment;
         let selectedCompanyValue = isOtherCompSelected ? state.otherCompany : state.selectedCompany;
         let companyData = {};
@@ -125,14 +139,16 @@ export const Upload = () => {
         if (state.logoUpload) {
             logoUrl = await uploadFile(`logos/${state.logoUpload.name}`, state.logoUpload); 
         }
-
+        
+        // Logic for handling data when adding a new company
         if (isOtherCompSelected) {
             companyData = { 
                 companyName: state.otherCompany,
                 logoURL: logoUrl,
                 companyURL: refs.companyURL.current.value
             };
-
+            
+            // Check if the company with the same name already exists (double-check)
             const existingCompany = companies.find(company => company.companyName === state.otherCompany);
 
             if (existingCompany) {
@@ -144,16 +160,19 @@ export const Upload = () => {
             console.log('Company Added');
             selectedCompanyValue = docRef.id;
         } else {
+            // Logic for handling data when selecting an existing company
             const selectedCompany = companies.find(company => company.companyName === selectedCompanyValue);
             companyData = selectedCompany;
             console.log('Company: ', companyData);
             selectedCompanyValue = companyData.id;
         }
 
+        // Data that will be submitted into the database
         let data={
             companyID: selectedCompanyValue,
             companyName: companyData.companyName,
             companyURL: companyData.companyURL,
+            course: refs.course.current.value,
             department: selectedDepartmentValue,
             description: refs.description.current.value,
             endQuarter: state.endQuarter,
@@ -166,6 +185,7 @@ export const Upload = () => {
             schoolYear: state.selectedYear,
             slide: refs.slide.current.value,
             startQuarter: state.startQuarter,
+            summary: refs.summary.current.value,
             teamMembers: refs.teamMembers.current.value,
             videoName: refs.videoName.current.value
         }
@@ -205,8 +225,12 @@ export const Upload = () => {
                     <input type="text" ref={refs.projectName} className="border rounded px-2 py-1" maxLength={50}></input>
                 </FormItem>
 
-                <FormItem label = "Project Description" tooltip = "Write a short description of your project!" required>
-                    <textarea ref={refs.description} className="border rounded px-2 py-1 h-20" maxLength={200}></textarea>
+                <FormItem label = "Project Summary" tooltip = "Write a short description of your project!" required>
+                    <textarea ref={refs.summary} className="border rounded px-2 py-1 h-20" placeholder='Write a short description of your project!' maxLength={200}></textarea>
+                </FormItem>
+
+                <FormItem label = "Project Description" tooltip = "Write a detailed description of your project!" required>
+                    <textarea ref={refs.description} className="border rounded px-2 py-1 h-20" placeholder='Write a detailed description of your project!' maxLength={500}></textarea>
                 </FormItem>
 
                 <FormItem label = "Team Members" tooltip = "Separate names by comma" required>
@@ -215,6 +239,10 @@ export const Upload = () => {
 
                 {/*Course Information*/}
                 <h1 className=' font-extrabold text-2xl'>Course Information</h1>
+
+                <FormItem label = "Course Name" required>
+                    <input type="text" ref={refs.course} className="border rounded px-2 py-1" placeholder='INF 117, CS 143B, etc...' maxLength={50}></input>
+                </FormItem>
 
                 <FormItem label = "Faculty Advisors" required>
                     <textarea ref={refs.faculty} className="border rounded px-2 py-1 h-20" placeholder='Hadar Ziv, Shannon Alfaro, etc...'></textarea>
