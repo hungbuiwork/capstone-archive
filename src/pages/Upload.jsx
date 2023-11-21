@@ -12,6 +12,7 @@ export const Upload = () => {
         award: React.useRef(),
         companyURL: React.useRef(),
         course: React.useRef(),
+        courseLevel: React.useRef(),
         description: React.useRef(),
         faculty: React.useRef(),
         liasons: React.useRef(),
@@ -34,13 +35,16 @@ export const Upload = () => {
         awardChecked: false,
         endQuarter: 'Fall',
         imageUpload: null,
+        level: 'undergrad',
         logoUpload: null,
         otherCompany: '',
         otherDepartment: '',
+        pendingVerification: true,
         selectedCompany: 'Select Company',
         selectedDepartment: 'Select Department',
         selectedYear: `${new Date().getFullYear()}-${new Date().getFullYear()+1}`, 
         startQuarter: 'Fall',
+        verified: false,
         videoUpload: null
     });
 
@@ -169,7 +173,6 @@ export const Upload = () => {
             companyData = selectedCompany;
             console.log('Company: ', companyData);
             selectedCompanyValue = companyData.id;
-            navigate('/thankYou');
         }
 
         // Data that will be submitted into the database
@@ -182,16 +185,19 @@ export const Upload = () => {
             description: refs.description.current.value,
             endQuarter: state.endQuarter,
             faculty: refs.faculty.current.value,
+            level: state.level,
             liasons: refs.liasons.current.value,
             logoURL: companyData.logoURL,
             misc: refs.misc.current.value,
-            projectName: refs.projectName.current.value,
+            pendingVerification: state.pendingVerification,
             poster: refs.poster.current.value,
+            projectName: refs.projectName.current.value,
             schoolYear: state.selectedYear,
             slide: refs.slide.current.value,
             startQuarter: state.startQuarter,
             summary: refs.summary.current.value,
             teamMembers: refs.teamMembers.current.value,
+            verified: state.verified,
             videoName: refs.videoName.current.value
         }
         
@@ -216,7 +222,7 @@ export const Upload = () => {
         try {
             await addDoc(projectsRef, data);
             console.log('Document successfully written!');
-            //navigate('/thankYou');
+            navigate('/thankYou');
         } catch (error) {
             console.error('Error writing document:', error);
         }
@@ -248,6 +254,13 @@ export const Upload = () => {
 
                 <FormItem label = "Course Name" required>
                     <input type="text" ref={refs.course} className="border rounded px-2 py-1" placeholder='INF 117, CS 143B, etc...' maxLength={50}></input>
+                </FormItem>
+
+                <FormItem label="Course Level" required>
+                    <select value={state.level} onChange={(e) => setState(prevState => ({...prevState, level: e.target.value}))} className="border rounded px-2 py-1">
+                        <option value="Undergrad">Undergraduate</option>
+                        <option value="Graduate">Graduate</option>
+                    </select>
                 </FormItem>
 
                 <FormItem label = "Faculty Advisors" required>
