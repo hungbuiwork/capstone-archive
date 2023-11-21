@@ -23,34 +23,41 @@ export const ProjectView = () => {
       const uniqueDepartments = new Map();
       const uniqueYears = new Map();
 
-      const querySnapshot = await getDocs(collection(firestore, "projects"));
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "projects"));
 
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
 
-        // Companies (sponsors)
-        if (data.company) {
-          uniqueCompanies.set(data.company, (uniqueCompanies.get(data.company) || 0) + 1);
-        }
+          // Only count verified projects
+          if (data.verified) {
+            // Companies (sponsors)
+            if (data.company) {
+              uniqueCompanies.set(data.company, (uniqueCompanies.get(data.company) || 0) + 1);
+            }
 
-        // Departments
-        if (data.department) {
-          uniqueDepartments.set(data.department, (uniqueDepartments.get(data.department) || 0) + 1);
-        }
+            // Departments
+            if (data.department) {
+              uniqueDepartments.set(data.department, (uniqueDepartments.get(data.department) || 0) + 1);
+            }
 
-        // Years
-        if (data.schoolYear) {
-          uniqueYears.set(data.schoolYear, (uniqueYears.get(data.schoolYear) || 0) + 1);
-        }
-      });
+            // Years
+            if (data.schoolYear) {
+              uniqueYears.set(data.schoolYear, (uniqueYears.get(data.schoolYear) || 0) + 1);
+            }
+          }
+        });
 
-      const sortedCompanies = Array.from(uniqueCompanies.entries()).sort();
-      const sortedDepartments = Array.from(uniqueDepartments.entries()).sort();
-      const sortedYears = Array.from(uniqueYears.entries()).sort();
+        const sortedCompanies = Array.from(uniqueCompanies.entries()).sort();
+        const sortedDepartments = Array.from(uniqueDepartments.entries()).sort();
+        const sortedYears = Array.from(uniqueYears.entries()).sort();
 
-      setSponsors(sortedCompanies);
-      setDepartments(sortedDepartments);
-      setYears(sortedYears);
+        setSponsors(sortedCompanies);
+        setDepartments(sortedDepartments);
+        setYears(sortedYears);
+      } catch (error) {
+        console.error("Error fetching unique values:", error);
+      }
     };
 
     fetchUniqueValues();
