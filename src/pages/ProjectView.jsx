@@ -19,7 +19,7 @@ export const ProjectView = () => {
 
   useEffect(() => {
     const fetchUniqueValues = async () => {
-      const uniqueSponsors = new Map();
+      const uniqueCompanies = new Map();
       const uniqueDepartments = new Map();
       const uniqueYears = new Map();
 
@@ -28,9 +28,9 @@ export const ProjectView = () => {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
 
-        // Sponsors
-        if (data.sponsor) {
-          uniqueSponsors.set(data.sponsor, (uniqueSponsors.get(data.sponsor) || 0) + 1);
+        // Companies (sponsors)
+        if (data.company) {
+          uniqueCompanies.set(data.company, (uniqueCompanies.get(data.company) || 0) + 1);
         }
 
         // Departments
@@ -44,11 +44,11 @@ export const ProjectView = () => {
         }
       });
 
-      const sortedSponsors = Array.from(uniqueSponsors.entries()).sort();
+      const sortedCompanies = Array.from(uniqueCompanies.entries()).sort();
       const sortedDepartments = Array.from(uniqueDepartments.entries()).sort();
       const sortedYears = Array.from(uniqueYears.entries()).sort();
 
-      setSponsors(sortedSponsors);
+      setSponsors(sortedCompanies);
       setDepartments(sortedDepartments);
       setYears(sortedYears);
     };
@@ -62,7 +62,8 @@ export const ProjectView = () => {
         let queryRef = query(collection(firestore, "projects"));
 
         if (selectedFilters.sponsor) {
-          queryRef = query(queryRef, where("sponsor", "==", selectedFilters.sponsor));
+          // Update the filter to use "company" instead of "sponsor"
+          queryRef = query(queryRef, where("company", "==", selectedFilters.sponsor));
         }
 
         if (selectedFilters.department) {
@@ -131,9 +132,9 @@ export const ProjectView = () => {
             onChange={(e) => setSelectedSponsor(e.target.value)}
           >
             <option value="">All</option>
-            {sponsors.map(([sponsor, count]) => (
-              <option key={sponsor} value={sponsor}>
-                {`${sponsor} (${count})`}
+            {sponsors.map(([company, count]) => (
+              <option key={company} value={company}>
+                {`${company} (${count})`}
               </option>
             ))}
           </select>
