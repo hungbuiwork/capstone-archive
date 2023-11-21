@@ -1,36 +1,69 @@
-import React, {useState} from 'react'; 
+import React, {useState, useEffect} from 'react'; 
 import {firestore} from '../firebase';
-import {addDoc,collection} from '@firebase/firestore';
+import {addDoc,collection, getDocs} from '@firebase/firestore';
 import {getSchoolYears, uploadFile, departments, quarters} from '../firebaseUtils';
 import { FormItem } from '../components/FormItem';
+import { useNavigate } from 'react-router-dom';
+
 
 export const Upload = () => {
+    // Refs for form inputs
     const refs = {
-      award: React.useRef(),
-      company: React.useRef(),
-      description: React.useRef(),
-      faculty: React.useRef(),
-      misc: React.useRef(),
-      name: React.useRef(),
-      poster: React.useRef(),
-      slide: React.useRef(),
-      teamMembers: React.useRef(),
-      videoName: React.useRef()
+        award: React.useRef(),
+        companyURL: React.useRef(),
+        course: React.useRef(),
+        description: React.useRef(),
+        faculty: React.useRef(),
+        liasons: React.useRef(),
+        misc: React.useRef(),
+        projectName: React.useRef(),
+        poster: React.useRef(),
+        slide: React.useRef(),
+        summary: React.useRef(),
+        teamMembers: React.useRef(),
+        videoName: React.useRef()
     };
+    
+    // Firestore collections
     const projectsRef = collection(firestore, 'projects');
+    const companiesRef = collection(firestore, 'companies');
 
+    // State variables
+    const [companies, setCompanies] = useState([]);
     const [state, setState] = useState({
         awardChecked: false,
         endQuarter: 'Fall',
         imageUpload: null,
         logoUpload: null,
+        otherCompany: '',
         otherDepartment: '',
+        selectedCompany: 'Select Company',
         selectedDepartment: 'Select Department',
         selectedYear: `${new Date().getFullYear()}-${new Date().getFullYear()+1}`, 
         startQuarter: 'Fall',
         videoUpload: null
     });
 
+    // Fetch companies from Firestore on component mount
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            const querySnapshot = await getDocs(companiesRef);
+            const companiesData = [];
+            querySnapshot.forEach((doc) => {
+                companiesData.push({
+                    id: doc.id,
+                    companyName: doc.data().companyName,
+                    logoURL: doc.data().logoURL,
+                    companyURL: doc.data().companyURL,
+                });
+            });
+            setCompanies(companiesData);
+        };
+    
+        fetchCompanies();
+      }, []);
+
+    // Event handler for department change
     const handleDepartmentChange = (e) => {
         const selectedValue = e.target.value;
         setState(prevState => ({...prevState, selectedDepartment: selectedValue}));
@@ -39,40 +72,125 @@ export const Upload = () => {
             setState(prevState => ({...prevState, otherDepartment: ''}));
         }
     };
-
+    // Event handler for other department change
     const handleOtherDepartmentChange = (e) => {
         setState(prevState => ({...prevState, otherDepartment: e.target.value}));
     };
 
-    const isOtherSelected = state.selectedDepartment === 'Other';
+    // Event handler for company change
+    const handleCompanyChange = (e) => {
+        const selectedValue = e.target.value;
+        const selectedCompany = companies.find(company => company.companyName === selectedValue);
+        setState(prevState => ({...prevState, selectedCompany: selectedCompany ? selectedCompany.id : selectedValue}));
 
+        if (selectedValue === 'Add New Company') {
+            setState(prevState => ({...prevState, otherCompany: ''}));
+        } else {
+            setState(prevState => ({...prevState, selectedCompany: selectedValue, otherCompany: ''}));
+        }
+    };
+
+    // Event handler for other company change
+    const handleOtherCompanyChange = (e) => {
+        setState(prevState => ({...prevState, otherCompany: e.target.value}));
+    };
+  
+    // Check if the selected department/company is 'Other'
+    const isOtherDeptSelected = state.selectedDepartment === 'Other';
+    const isOtherCompSelected = state.selectedCompany === 'Add New Company';
+
+    const navigate = useNavigate();
+
+    // Event handler for form submission
     const handleSave = async(e) => {
         e.preventDefault();
 
+        // Check if the company with the same name already exists
+        const existingCompany = companies.find(company => company.companyName === state.otherCompany);
+        
+        if (existingCompany) {
+            alert('Company with this name already exists. Please choose a different name.');
+            return;
+        }
+        
+        // Additional form validation checks...
         if (state.selectedDepartment === 'Select Department') {
             alert('Please select a department');
             return;
         }
 
-        if (isOtherSelected && state.otherDepartment === '') {
+        if (state.selectedCompany === 'Select Company') {
+            alert('Please select a Company');
+            return;
+        }
+
+        if (isOtherDeptSelected && state.otherDepartment === '') {
             alert('Please enter the other department');
             return;
         }
 
-        let selectedDepartmentValue = isOtherSelected ? state.otherDepartment : state.selectedDepartment;
+        if (isOtherCompSelected && state.otherCompany === '') {
+            alert('Please enter the company details');
+            return;
+        }
 
+        // Logic for handling company data
+        let selectedDepartmentValue = isOtherDeptSelected ? state.otherDepartment : state.selectedDepartment;
+        let selectedCompanyValue = isOtherCompSelected ? state.otherCompany : state.selectedCompany;
+        let companyData = {};
+        let logoUrl = '';
+
+        if (state.logoUpload) {
+            logoUrl = await uploadFile(`logos/${state.logoUpload.name}`, state.logoUpload); 
+        }
+        
+        // Logic for handling data when adding a new company
+        if (isOtherCompSelected) {
+            companyData = { 
+                companyName: state.otherCompany,
+                logoURL: logoUrl,
+                companyURL: refs.companyURL.current.value
+            };
+            
+            // Check if the company with the same name already exists (double-check)
+            const existingCompany = companies.find(company => company.companyName === state.otherCompany);
+
+            if (existingCompany) {
+                alert('Company with this name already exists. Please choose a different name.');
+                return;
+            }
+
+            const docRef = await addDoc(companiesRef, companyData);
+            console.log('Company Added');
+            selectedCompanyValue = docRef.id;
+        } else {
+            // Logic for handling data when selecting an existing company
+            const selectedCompany = companies.find(company => company.companyName === selectedCompanyValue);
+            companyData = selectedCompany;
+            console.log('Company: ', companyData);
+            selectedCompanyValue = companyData.id;
+            navigate('/thankYou');
+        }
+
+        // Data that will be submitted into the database
         let data={
-            company: refs.company.current.value,
+            companyID: selectedCompanyValue,
+            companyName: companyData.companyName,
+            companyURL: companyData.companyURL,
+            course: refs.course.current.value,
             department: selectedDepartmentValue,
             description: refs.description.current.value,
             endQuarter: state.endQuarter,
             faculty: refs.faculty.current.value,
+            liasons: refs.liasons.current.value,
+            logoURL: companyData.logoURL,
             misc: refs.misc.current.value,
-            name: refs.name.current.value,
+            projectName: refs.projectName.current.value,
             poster: refs.poster.current.value,
             schoolYear: state.selectedYear,
             slide: refs.slide.current.value,
             startQuarter: state.startQuarter,
+            summary: refs.summary.current.value,
             teamMembers: refs.teamMembers.current.value,
             videoName: refs.videoName.current.value
         }
@@ -88,12 +206,6 @@ export const Upload = () => {
             data = { ...data, imageURL: imageUrl };
         }
 
-        // Upload logo
-        if (state.logoUpload) {
-            const logoUrl = await uploadFile(`logos/${state.logoUpload.name}`, state.logoUpload);
-            data = { ...data, logoURL: logoUrl };
-        }
-
         // Upload video
         if (state.videoUpload) {
             const videoUrl = await uploadFile(`videos/${state.videoUpload.name}`, state.videoUpload);
@@ -104,6 +216,7 @@ export const Upload = () => {
         try {
             await addDoc(projectsRef, data);
             console.log('Document successfully written!');
+            //navigate('/thankYou');
         } catch (error) {
             console.error('Error writing document:', error);
         }
@@ -113,27 +226,34 @@ export const Upload = () => {
             <form onSubmit={handleSave} className="flex flex-col space-y-4">
                 {/*BASIC PROJECT INFO*/}
                 <h1 className=' font-extrabold text-2xl'>Project Information</h1>
+
                 <FormItem label = "Project Title" required>
-                    <input type="text" ref={refs.name} className="border rounded px-2 py-1" maxLength={50}></input>
-                </FormItem>
-                <FormItem label = "Project Description" tooltip = "Write a short description of your project!" required>
-                    <textarea ref={refs.description} className="border rounded px-2 py-1 h-20" maxLength={200}></textarea>
-                </FormItem>
-                <FormItem label = "Team Members" tooltip = "Separate names by comma" required>
-                    <textarea 
-                    ref={refs.teamMembers} 
-                    className="border rounded px-2 py-1 h-20"
-                    placeholder='John Doe, Sarah Davis, etc ...'
-                    ></textarea>
+                    <input type="text" ref={refs.projectName} className="border rounded px-2 py-1" maxLength={50}></input>
                 </FormItem>
 
+                <FormItem label = "Project Summary" tooltip = "Write a short description of your project!" required>
+                    <textarea ref={refs.summary} className="border rounded px-2 py-1 h-20" placeholder='Write a short description of your project!' maxLength={200}></textarea>
+                </FormItem>
+
+                <FormItem label = "Project Description" tooltip = "Write a detailed description of your project!" required>
+                    <textarea ref={refs.description} className="border rounded px-2 py-1 h-20" placeholder='Write a detailed description of your project!' maxLength={500}></textarea>
+                </FormItem>
+
+                <FormItem label = "Team Members" tooltip = "Separate names by comma" required>
+                    <textarea ref={refs.teamMembers} className="border rounded px-2 py-1 h-20" placeholder='John Doe, Sarah Davis, etc ...'></textarea>
+                </FormItem>
 
                 {/*Course Information*/}
                 <h1 className=' font-extrabold text-2xl'>Course Information</h1>
 
+                <FormItem label = "Course Name" required>
+                    <input type="text" ref={refs.course} className="border rounded px-2 py-1" placeholder='INF 117, CS 143B, etc...' maxLength={50}></input>
+                </FormItem>
+
                 <FormItem label = "Faculty Advisors" required>
                     <textarea ref={refs.faculty} className="border rounded px-2 py-1 h-20" placeholder='Hadar Ziv, Shannon Alfaro, etc...'></textarea>
                 </FormItem>
+
                 <FormItem label = "Department" tooltip = "Select what department the course is in" required>
                     <select value={state.selectedDepartment} onChange={handleDepartmentChange} className="border rounded px-2 py-1">
                         {departments.map((department) => (
@@ -143,7 +263,7 @@ export const Upload = () => {
                         ))}
                     </select>
         
-                    {isOtherSelected && (
+                    {isOtherDeptSelected && (
                         <div>
                             <label> Other : </label>
                             <input type="text" value={state.otherDepartment} onChange={handleOtherDepartmentChange} className="border rounded px-2 py-1" />
@@ -183,27 +303,44 @@ export const Upload = () => {
 
                 {/*Partner Information*/}
                 <h1 className=' font-extrabold text-2xl'>Partner Information</h1>
-
-    
-    
-                <FormItem label = "Partner(Company)" tooltip = "The company in partnership with the project" required>
-                    <input type="text" ref={refs.company} className="border rounded px-2 py-1"></input>
-                </FormItem>
-
-                <FormItem label = "Partner Logo" tooltip = "Image URL to the company's logo" required>
-                    <input type="file" onChange={(event) => {setState(prevState => ({...prevState, logoUpload: event.target.files[0]}))}} className="border rounded px-2 py-1 file-input file-input-primary"></input>
+                
+                <FormItem label="Choose Company" required>
+                <select value={state.selectedCompany} onChange={handleCompanyChange} className="border rounded px-2 py-1">
+                    <option value="Select Company">Select Company</option>
+                    <option value="Add New Company">Add New Company</option>
+                    {companies.map((company) => (
+                    <option key={company.id} value={company.companyName}>
+                        {company.companyName}
+                    </option>
+                    ))}
+                </select>
+        
+                {isOtherCompSelected && (
+                    <div>
+                    <FormItem label="Enter New Company Name">
+                        <input type="text" value={state.otherCompany} onChange={handleOtherCompanyChange} className="border rounded px-2 py-1" />
+                    </FormItem>
+        
+                    <FormItem label="Upload Company Logo">
+                        <input type="file" onChange={(event) => { setState(prevState => ({...prevState, logoUpload: event.target.files[0] })) }} className="border rounded px-2 py-1" />
+                    </FormItem>
+        
+                    <FormItem label="Enter Company URL">
+                        <input type="text" ref={refs.companyURL} className="border rounded px-2 py-1"/>
+                    </FormItem>
+                    </div>
+                )}
                 </FormItem>
 
                 <FormItem label = "Partner Liaisons" tooltip = "Company employee worked with. Separate by comma." required>
-                    <textarea  className="border rounded px-2 py-1 h-20" placeholder='(currently nonfunctional) Jerry Joe, Bobby Balooza, etc...'></textarea>
+                    <textarea ref={refs.liasons} className="border rounded px-2 py-1 h-20" placeholder='John Doe, Sarah Davis, etc ...'></textarea>
                 </FormItem>
 
                 <h1 className=' font-extrabold text-2xl'>Other Project Information</h1>
-    
-                <FormItem label = "Project Image" tooltip = "A screenshot of your project.">
-                    <input type="file" onChange={(event) => {setState(prevState => ({...prevState, imageUpload: event.target.files[0]}))}} className=" file-input file-input-bordered file-input-primary border rounded px-2 py-1"></input>
-                </FormItem>
 
+                <FormItem label = "Project Image" tooltip = "A screenshot of your project.">
+                    <input type="file" onChange={(event) => {setState(prevState => ({...prevState, imageUpload: event.target.files[0]}))}} className="file-input file-input-bordered file-input-primary border rounded px-2 py-1"></input>
+                </FormItem>
 
                 {/* For now no awards */}
                 {state.awardChecked && (
@@ -220,17 +357,15 @@ export const Upload = () => {
                     <input type="file" onChange={(event) => {setState(prevState => ({...prevState, videoUpload: event.target.files[0]}))}} className="border rounded px-2 py-1 file-input file-input-bordered file-input-primary"></input>
                 </FormItem>
 
-
                 <FormItem label = "Poster URL">
                     <input type="text" ref={refs.poster} className="border rounded px-2 py-1"></input>
                 </FormItem>
-                
 
                 <FormItem label = "Slides URL">
                     <input type="text" ref={refs.slide} className="border rounded px-2 py-1"></input>   
                 </FormItem>
-                
-                
+
+
                 <FormItem label = "Misc URL">
                     <input type="text" ref={refs.misc} className="border rounded px-2 py-1"></input>
                 </FormItem>
