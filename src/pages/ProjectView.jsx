@@ -29,13 +29,19 @@ export const ProjectView = () => {
         const data = doc.data();
 
         // Sponsors
-        uniqueSponsors.set(data.sponsor, (uniqueSponsors.get(data.sponsor) || 0) + 1);
+        if (data.sponsor) {
+          uniqueSponsors.set(data.sponsor, (uniqueSponsors.get(data.sponsor) || 0) + 1);
+        }
 
         // Departments
-        uniqueDepartments.set(data.department, (uniqueDepartments.get(data.department) || 0) + 1);
+        if (data.department) {
+          uniqueDepartments.set(data.department, (uniqueDepartments.get(data.department) || 0) + 1);
+        }
 
         // Years
-        uniqueYears.set(data.schoolYear, (uniqueYears.get(data.schoolYear) || 0) + 1);
+        if (data.schoolYear) {
+          uniqueYears.set(data.schoolYear, (uniqueYears.get(data.schoolYear) || 0) + 1);
+        }
       });
 
       const sortedSponsors = Array.from(uniqueSponsors.entries()).sort();
@@ -168,13 +174,12 @@ export const ProjectView = () => {
         <div className="m-2 flex flex-col">
           <label className="font-bold">SEARCH</label>
           <input
-          className="rounded-md border-[1.5px] border-[#C4C4C4] p-2 text-sm w-48"
-          type="text"
-          placeholder="Search by description"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-
+            className="rounded-md border-[1.5px] border-[#C4C4C4] p-2 text-sm w-48"
+            type="text"
+            placeholder="Search by description"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
 
         <div className="m-2 flex flex-col justify-end">
@@ -186,16 +191,6 @@ export const ProjectView = () => {
           </button>
         </div>
       </form>
-
-      <div className="m-4">
-        <input
-          className="rounded-md border-[1.5px] border-[#C4C4C4] p-2 text-sm w-48"
-          type="text"
-          placeholder="Search by title or description"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
 
       <div className="m-4 border-2 rounded-2xl flex flex-wrap justify-center">
         {searchResults.length > 0 ? (
