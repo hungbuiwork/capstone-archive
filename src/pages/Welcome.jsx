@@ -20,6 +20,11 @@ export const Welcome = () => {
               Find a project
             </button>
           </a>
+          <a href="/verify">
+            <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
+              Verify a project
+            </button>
+          </a>
           
         </div>
       </div>
