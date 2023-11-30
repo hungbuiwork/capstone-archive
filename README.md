@@ -6,7 +6,7 @@ Download link: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
 # Steps to get started
 1. Use git to clone this repository
-2. run the following lines of code
+2. run the following lines of npx
 3. to get into the folder, run --> cd [folder name]
 4. to install dependencies, run --> npm install
 5. run the project --> npm run start
