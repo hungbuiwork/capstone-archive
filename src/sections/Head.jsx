@@ -15,7 +15,7 @@ export const Head = () => {
           <div>
           </div>
         </div>
-        <div class="bg-yellow-300 opacity-75 w-full h-1.5 mt-2">
+        <div class="bg-yellow-300 opacity-75 w-full h-1.5 mt-2"> 
       </div>
       </div>
     </div>
