@@ -114,6 +114,25 @@ export const VerifyProjects = () => {
     setFeedbackText(`Skipped "${currentProject?.name}"`);
   };
 
+  const reloadRejectedProjects = async () => {
+    try {
+      // Query all documents from the "projects" collection where pendingVerification is false and verified is false
+      const projectCollection = collection(firestore, "projects");
+      const q = query(projectCollection, where("pendingVerification", "==", false), where("verified", "==", false));
+      const querySnapshot = await getDocs(q);
+      let projects = [];
+      // Store documents in the projectsToReview list
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        projects.push({ id: doc.id, ...data });
+      });
+      setProjectsToReview((prevProjects) => [...prevProjects, ...projects]);
+      setCurrentProject(projects[0] || null); // Set currentProject to the first project or null if no projects
+    } catch (error) {
+      console.error("Error reloading projects: ", error);
+    }
+  };
+
   if (projectsToReview.length < 1) {
     return (
       <div>
@@ -123,8 +142,12 @@ export const VerifyProjects = () => {
         <h1 className=" font-bold text-center text-2xl">
           There are no more pending projects to review! You're all up to date 
         </h1>
-        <h2 className="text-9xl text-center">✅</h2>
-
+        <h2 className="text-9xl text-center mb-4">✅</h2>
+        <div className=" flex justify-center mt-4">
+          <button className="btn btn-primary m-2" onClick={reloadRejectedProjects}>
+            Reload Rejected Projects
+          </button>
+        </div>
       </div>
     );
   }
@@ -148,6 +171,7 @@ export const VerifyProjects = () => {
           Skip
         </button>}
       </div>
+
       <h1 className=" text-center text-xl font-bold text-success">
         {feedbackText}
       </h1>
