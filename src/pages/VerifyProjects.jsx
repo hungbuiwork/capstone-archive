@@ -15,6 +15,9 @@ export const VerifyProjects = () => {
   const [projectsToReview, setProjectsToReview] = useState([]);
   const [currentProject, setCurrentProject] = useState();
   const [feedbackText, setFeedbackText] = useState();
+  const [showReloadRejectedButton, setShowReloadRejectedButton] = useState(true);
+  const [showReloadAcceptedButton, setShowReloadAcceptedButton] = useState(true);
+
 
   //Load Projects
   useEffect(() => {
@@ -67,6 +70,7 @@ export const VerifyProjects = () => {
         //Update the currentproject
         setCurrentProject(projectsToReview[0]);
         setFeedbackText(`✅Successfully APPROVED "${currentProject?.name}"`);
+        setShowReloadAcceptedButton(true);
       } 
       catch (error) {
         setFeedbackText(
@@ -92,6 +96,7 @@ export const VerifyProjects = () => {
         //Update the currentproject
         setCurrentProject(projectsToReview[0]);
         setFeedbackText(`✅ Successfully DENIED "${currentProject?.name}"`);
+        setShowReloadRejectedButton(true);
       } 
       catch (error) {
         setFeedbackText(
@@ -128,6 +133,27 @@ export const VerifyProjects = () => {
       });
       setProjectsToReview((prevProjects) => [...prevProjects, ...projects]);
       setCurrentProject(projects[0] || null); // Set currentProject to the first project or null if no projects
+      setShowReloadRejectedButton(false);
+    } catch (error) {
+      console.error("Error reloading projects: ", error);
+    }
+  };
+
+  const reloadAcceptedProjects = async () => {
+    try {
+      // Query all documents from the "projects" collection where pendingVerification is false and verified is false
+      const projectCollection = collection(firestore, "projects");
+      const q = query(projectCollection, where("pendingVerification", "==", false), where("verified", "==", true));
+      const querySnapshot = await getDocs(q);
+      let projects = [];
+      // Store documents in the projectsToReview list
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        projects.push({ id: doc.id, ...data });
+      });
+      setProjectsToReview((prevProjects) => [...prevProjects, ...projects]);
+      setCurrentProject(projects[0] || null); // Set currentProject to the first project or null if no projects
+      setShowReloadAcceptedButton(false);
     } catch (error) {
       console.error("Error reloading projects: ", error);
     }
@@ -144,6 +170,9 @@ export const VerifyProjects = () => {
         </h1>
         <h2 className="text-9xl text-center mb-4">✅</h2>
         <div className=" flex justify-center mt-4">
+          <button className="btn btn-primary m-2" onClick={reloadAcceptedProjects}>
+            Reload Accepted Projects
+          </button>
           <button className="btn btn-primary m-2" onClick={reloadRejectedProjects}>
             Reload Rejected Projects
           </button>
@@ -170,6 +199,17 @@ export const VerifyProjects = () => {
         {projectsToReview.length > 1 && <button className=" btn btn-ghost m-2" onClick={handleSkip}>
           Skip
         </button>}
+        {showReloadAcceptedButton && (        
+          <button className="btn btn-primary m-2" onClick={reloadAcceptedProjects}>
+            Reload Accepted Projects
+          </button>
+        )}
+
+        {showReloadRejectedButton && (        
+          <button className="btn btn-primary m-2" onClick={reloadRejectedProjects}>
+            Reload Rejected Projects
+          </button>
+        )}
       </div>
 
       <h1 className=" text-center text-xl font-bold text-success">
