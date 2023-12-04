@@ -224,6 +224,7 @@ export const Upload = () => {
         }
     };
     return (
+        <div className="flex flex-row justify-center items-start min-h-screen space-x-4">
         <div className="flex flex-col items-center justify-center space-y-4">
             <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 p-4">
                 {/*Project Information*/}
@@ -385,7 +386,17 @@ export const Upload = () => {
                 <div className = "flex justify-center w-full col-span-full">
                 <button type='submit' className="bg-sky-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded">Submit</button>
                 </div>
-            </form>
+
+                </form>
+                </div> 
+                      
+                {/* Need Help Box */}
+                <div className="flex flex-col w-56 h-auto p-4 border rounded space-y-4 bg-white shadow-lg">
+                    <h2 className="text-lg font-bold text-center">Need Help?</h2>
+                    <p className="text-sm">If you have any questions or need assistance, please contact</p>
+                    <p className="text-sm font-bold">Mimi Anderson:</p>
+                    <a href="mailto:yangmm@uci.edu" className="text-sm text-blue-600">yangmm@uci.edu</a>
+                </div>
         </div>
     )
 }
