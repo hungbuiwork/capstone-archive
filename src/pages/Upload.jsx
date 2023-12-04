@@ -34,6 +34,7 @@ export const Upload = () => {
     const [state, setState] = useState({
         awardChecked: false,
         endQuarter: 'Fall',
+        programlevel: 'Grad',
         imageUpload: null,
         level: 'undergrad',
         logoUpload: null,
@@ -142,7 +143,7 @@ export const Upload = () => {
         let selectedDepartmentValue = isOtherDeptSelected ? state.otherDepartment : state.selectedDepartment;
         let selectedCompanyValue = isOtherCompSelected ? state.otherCompany : state.selectedCompany;
         let companyData = {};
-        let logoUrl = '';
+        let logoUrl = '';   
 
         if (state.logoUpload) {
             logoUrl = await uploadFile(`logos/${state.logoUpload.name}`, state.logoUpload); 
@@ -184,6 +185,7 @@ export const Upload = () => {
             department: selectedDepartmentValue,
             description: refs.description.current.value,
             endQuarter: state.endQuarter,
+            programlevel: state.programlevel,
             faculty: refs.faculty.current.value,
             level: state.level,
             liasons: refs.liasons.current.value,
@@ -228,29 +230,33 @@ export const Upload = () => {
         }
     };
     return (
+        <div className="flex flex-row justify-center items-start min-h-screen space-x-4">
         <div className="flex flex-col items-center justify-center space-y-4">
-            <form onSubmit={handleSave} className="flex flex-col space-y-4">
-                {/*BASIC PROJECT INFO*/}
-                <h1 className=' font-extrabold text-2xl'>Project Information</h1>
+            <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 p-4">
+                {/*Project Information*/}
+                <div className="flex flex-col space-y-4">
+                    <h1 style={{ color: '#79B7FF' }} className=' font-extrabold text-2xl'>Project Information</h1>
 
-                <FormItem label = "Project Title" required>
-                    <input type="text" ref={refs.projectName} className="border rounded px-2 py-1" maxLength={50}></input>
-                </FormItem>
+                    <FormItem label = "Project Title" required>
+                        <input type="text" ref={refs.projectName} className="border rounded px-2 py-1" maxLength={50}></input>
+                    </FormItem>
 
-                <FormItem label = "Project Summary" tooltip = "Write a short description of your project!" required>
-                    <textarea ref={refs.summary} className="border rounded px-2 py-1 h-20" placeholder='Write a short description of your project!' maxLength={200}></textarea>
-                </FormItem>
+                    <FormItem label = "Project Summary" tooltip = "Write a short description of your project!" required>
+                        <textarea ref={refs.summary} className="border rounded px-2 py-1 h-20" placeholder='Write a short description of your project!' maxLength={200}></textarea>
+                    </FormItem>
 
-                <FormItem label = "Project Description" tooltip = "Write a detailed description of your project!" required>
-                    <textarea ref={refs.description} className="border rounded px-2 py-1 h-20" placeholder='Write a detailed description of your project!' maxLength={500}></textarea>
-                </FormItem>
+                    <FormItem label = "Project Description" tooltip = "Write a detailed description of your project!" required>
+                        <textarea ref={refs.description} className="border rounded px-2 py-1 h-20" placeholder='Write a detailed description of your project!' maxLength={500}></textarea>
+                    </FormItem>
 
-                <FormItem label = "Team Members" tooltip = "Separate names by comma" required>
-                    <textarea ref={refs.teamMembers} className="border rounded px-2 py-1 h-20" placeholder='John Doe, Sarah Davis, etc ...'></textarea>
-                </FormItem>
+                    <FormItem label = "Team Members" tooltip = "Separate names by comma" required>
+                        <textarea ref={refs.teamMembers} className="border rounded px-2 py-1 h-20" placeholder='John Doe, Sarah Davis, etc ...'></textarea>
+                    </FormItem>
+                </div>
 
                 {/*Course Information*/}
-                <h1 className=' font-extrabold text-2xl'>Course Information</h1>
+                <div className="flex flex-col space-y-4">
+                <h1 style={{ color: '#79B7FF' }} className=' font-extrabold text-2xl'>Course Information</h1>
 
                 <FormItem label = "Course Name" required>
                     <input type="text" ref={refs.course} className="border rounded px-2 py-1" placeholder='INF 117, CS 143B, etc...' maxLength={50}></input>
@@ -313,9 +319,12 @@ export const Upload = () => {
                         ))}
                     </select>
                 </FormItem>
+                </div>
+
 
                 {/*Partner Information*/}
-                <h1 className=' font-extrabold text-2xl'>Partner Information</h1>
+                <div className="flex flex-col space-y-4">
+                <h1 style={{ color: '#79B7FF' }} className=' font-extrabold text-2xl'>Partner Information</h1>
                 
                 <FormItem label="Choose Company" required>
                 <select value={state.selectedCompany} onChange={handleCompanyChange} className="border rounded px-2 py-1">
@@ -348,8 +357,11 @@ export const Upload = () => {
                 <FormItem label = "Partner Liaisons" tooltip = "Company employee worked with. Separate by comma." required>
                     <textarea ref={refs.liasons} className="border rounded px-2 py-1 h-20" placeholder='John Doe, Sarah Davis, etc ...'></textarea>
                 </FormItem>
+                </div>
 
-                <h1 className=' font-extrabold text-2xl'>Other Project Information</h1>
+                {/*Other Project Information*/}
+                <div className="flex flex-col space-y-4">
+                <h1 style={{ color: '#79B7FF' }} className=' font-extrabold text-2xl'>Other Project Information</h1>
 
                 <FormItem label = "Project Image" tooltip = "A screenshot of your project.">
                     <input type="file" onChange={(event) => {setState(prevState => ({...prevState, imageUpload: event.target.files[0]}))}} className="file-input file-input-bordered file-input-primary border rounded px-2 py-1"></input>
@@ -382,9 +394,22 @@ export const Upload = () => {
                 <FormItem label = "Misc URL">
                     <input type="text" ref={refs.misc} className="border rounded px-2 py-1"></input>
                 </FormItem>
+                </div>
 
-                <button type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-            </form>
+                <div className = "flex justify-center w-full col-span-full">
+                <button type='submit' className="bg-sky-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded">Submit</button>
+                </div>
+
+                </form>
+                </div> 
+                      
+                {/* Need Help Box */}
+                <div className="flex flex-col w-56 h-auto p-4 border rounded space-y-4 bg-white shadow-lg">
+                    <h2 className="text-lg font-bold text-center">Need Help?</h2>
+                    <p className="text-sm">If you have any questions or need assistance, please contact</p>
+                    <p className="text-sm font-bold">Mimi Anderson:</p>
+                    <a href="mailto:yangmm@uci.edu" className="text-sm text-blue-600">yangmm@uci.edu</a>
+                </div>
         </div>
     )
 }
