@@ -33,15 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/submit",
-    element:  <Upload></Upload>
-  },
-  {
-    path: "/test",
-    element:  <Home></Home>
-  },
-  {
-    path: "/fullProjectView",
-    element: <ProjectFull></ProjectFull>
+    element:  <div><Head></Head><Upload></Upload></div>
   },
   {
     path: "/verify",
