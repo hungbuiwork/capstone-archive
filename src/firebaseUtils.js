@@ -1,7 +1,7 @@
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from './firebase';
 
-export const departments = ['Select Department', 'Computer Science', 'Engineering', 'Business', 'Other'];
+export const departments = ['Select Department', 'Computer Science', 'Engineering', 'Informatics', 'Statistics', 'Other'];
 export const quarters = ['Fall', 'Winter', 'Spring', 'Summer'];
 
 export const uploadFile = async (fileRefPath, file) => {
