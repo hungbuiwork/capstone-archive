@@ -22,7 +22,7 @@ export const Project = (props) => {
 
       {
         <div className=" indicator flex-none w-auto">
-          <div className=" tooltip tooltip-left" data-tip = {data?.company}>
+          <div className=" tooltip tooltip-left" data-tip = {data?.company || data?.companyName}>
             <div className="indicator-item indicator-top indicator-start border-2 rounded-lg border-gray-600 aspect-square w-16 hover:w-20 lg:w-24 lg:hover:w-28 duration-300 overflow-hidden bg-white p-0">
               <img
                 className=" object-cover w-full h-full"
@@ -42,7 +42,7 @@ export const Project = (props) => {
       }
 
       <h2 className=" text-center text-3xl font-extrabold">{data?.name}</h2>
-      <p className="">{data?.description}</p>
+      <p className="">{data?.summary || data?.description}</p>
     </a>
   );
 };

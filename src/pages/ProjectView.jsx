@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { firestore } from "../firebase";
 import { Project } from "../components/Project";
-import Fuse from 'fuse.js';
+import Fuse from "fuse.js";
 export const ProjectView = () => {
   const [projectData, setProjectData] = useState([]);
   const [selectedSponsor, setSelectedSponsor] = useState("");
@@ -28,17 +28,26 @@ export const ProjectView = () => {
 
         // Companies (sponsors)
         if (data.company) {
-          uniqueCompanies.set(data.company, (uniqueCompanies.get(data.company) || 0) + 1);
+          uniqueCompanies.set(
+            data.company,
+            (uniqueCompanies.get(data.company) || 0) + 1
+          );
         }
 
         // Departments
         if (data.department) {
-          uniqueDepartments.set(data.department, (uniqueDepartments.get(data.department) || 0) + 1);
+          uniqueDepartments.set(
+            data.department,
+            (uniqueDepartments.get(data.department) || 0) + 1
+          );
         }
 
         // Years
         if (data.schoolYear) {
-          uniqueYears.set(data.schoolYear, (uniqueYears.get(data.schoolYear) || 0) + 1);
+          uniqueYears.set(
+            data.schoolYear,
+            (uniqueYears.get(data.schoolYear) || 0) + 1
+          );
         }
       });
 
@@ -59,13 +68,22 @@ export const ProjectView = () => {
         let queryRef = query(collection(firestore, "projects"));
         if (selectedFilters.sponsor) {
           // Update the filter to use "company" instead of "sponsor"
-          queryRef = query(queryRef, where("company", "==", selectedFilters.sponsor));
+          queryRef = query(
+            queryRef,
+            where("company", "==", selectedFilters.sponsor)
+          );
         }
         if (selectedFilters.department) {
-          queryRef = query(queryRef, where("department", "==", selectedFilters.department));
+          queryRef = query(
+            queryRef,
+            where("department", "==", selectedFilters.department)
+          );
         }
         if (selectedFilters.year) {
-          queryRef = query(queryRef, where("schoolYear", "==", selectedFilters.year));
+          queryRef = query(
+            queryRef,
+            where("schoolYear", "==", selectedFilters.year)
+          );
         }
         // Add a filter for the "verified" field
         queryRef = query(queryRef, where("verified", "==", true));
@@ -85,9 +103,9 @@ export const ProjectView = () => {
   }, [selectedFilters, projectsLimit]);
   const handleFilter = () => {
     const fuse = new Fuse(projectData, {
-      keys: ['description', 'title'], 
+      keys: ["description", "title"],
       includeScore: true,
-      threshold: 0.4, 
+      threshold: 0.4,
     });
     const searchResults = fuse.search(searchQuery);
     setSearchResults(searchResults.map((result) => result.item));
@@ -106,6 +124,19 @@ export const ProjectView = () => {
   return (
     <div className="text-[#313144]">
       <form className="flex justify-center flex-wrap mt-12" action="#">
+        <div className="m-2 flex flex-col">
+          <label className="font-bold">EDUCATION LEVEL</label>
+          <select
+            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
+            value={selectedSponsor}
+            onChange={(e) => setSelectedSponsor(e.target.value)}
+          >
+            <option value="">All /TODO: IMPLEMENT FUNCTIONALITY</option>
+              <option>Undergraduate</option>
+              <option>Graduate</option>
+          </select>
+
+        </div>
         <div className="m-2 flex flex-col">
           <label className="font-bold">PARTNERS</label>
           <select
