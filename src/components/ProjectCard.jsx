@@ -96,9 +96,9 @@ const ProjectCard = ({ project }) => {
       </div>
 
       <div className=" justify-center border-4 border-yellow-400">
-        <div className=" flex flex-row justify-between mb-4 border-2 border-orange-400">
+        <div className=" flex flex-row flex-wrap justify-between mb-4 border-2 border-orange-400">
           {/*COLUMN 1 */}
-          <div className=" border-2 border-red-500 w-64">
+          <div className=" border-2 border-red-500 w-full md:w-64 ">
             {/* IMAGE*/}
             <div className="aspect-w-4 aspect-h-3 bg-white border-2 rounded-xl border-gray-300 overflow-hidden">
               {imageURL ? (
@@ -114,7 +114,7 @@ const ProjectCard = ({ project }) => {
               )}
             </div>
             {/*EXTERNAL LINKS*/}
-            <div className=" border-0 flex justify-start flex-wrap">
+            <div className=" border-0 flex justify-center flex-wrap">
               {miscURL && (
                 <a
                   href={miscURL}
@@ -183,7 +183,7 @@ const ProjectCard = ({ project }) => {
           </div>
 
           {/* COLUMN 2*/}
-          <div className=" border-2 border-red-500 flex-1">
+          <div className=" border-2 border-red-500 flex-1  ">
             {/*Discription and Video*/}
             <div className=" border-2 border-black">
               <h1 className=" text-sky-900 text-2xl  uppercase font-bold alex-font leading-7 tracking-wide ">
@@ -225,7 +225,7 @@ const ProjectCard = ({ project }) => {
           </div>
 
           {/*COLUMN 3*/}
-          <div className=" border-2 border-red-500 w-64">
+          <div className=" border-2 border-red-500 w-64  ">
             <div className=" flex flex-col">
               {/* Suggested Content */}
               {otherProjectsByDepartment.length > 0 && (
