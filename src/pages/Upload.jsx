@@ -36,7 +36,7 @@ export const Upload = () => {
         endQuarter: 'Fall',
         programlevel: 'Grad',
         imageUpload: null,
-        level: 'undergrad',
+        level: 'Undergrad',
         logoUpload: null,
         otherCompany: '',
         otherDepartment: '',
