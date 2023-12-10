@@ -3,140 +3,114 @@ import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { firestore } from "../firebase";
 import { Project } from "../components/Project";
 import Fuse from "fuse.js";
+
 export const ProjectView = () => {
   const [projectData, setProjectData] = useState([]);
   const [selectedSponsor, setSelectedSponsor] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [sponsors, setSponsors] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [years, setYears] = useState([]);
+  const [levels, setLevels] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [projectsLimit, setProjectsLimit] = useState(12);
+
   useEffect(() => {
     const fetchUniqueValues = async () => {
       const uniqueCompanies = new Map();
       const uniqueDepartments = new Map();
       const uniqueYears = new Map();
+      const uniqueLevels = new Map();
 
       const querySnapshot = await getDocs(collection(firestore, "projects"));
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-
-        // Companies (sponsors)
         if (data.company) {
-          uniqueCompanies.set(
-            data.company,
-            (uniqueCompanies.get(data.company) || 0) + 1
-          );
+          uniqueCompanies.set(data.company, (uniqueCompanies.get(data.company) || 0) + 1);
         }
-
-        // Departments
         if (data.department) {
-          uniqueDepartments.set(
-            data.department,
-            (uniqueDepartments.get(data.department) || 0) + 1
-          );
+          uniqueDepartments.set(data.department, (uniqueDepartments.get(data.department) || 0) + 1);
         }
-
-        // Years
         if (data.schoolYear) {
-          uniqueYears.set(
-            data.schoolYear,
-            (uniqueYears.get(data.schoolYear) || 0) + 1
-          );
+          uniqueYears.set(data.schoolYear, (uniqueYears.get(data.schoolYear) || 0) + 1);
+        }
+        if (data.level) {
+          uniqueLevels.set(data.level, (uniqueLevels.get(data.level) || 0) + 1);
         }
       });
 
-      const sortedCompanies = Array.from(uniqueCompanies.entries()).sort();
-      const sortedDepartments = Array.from(uniqueDepartments.entries()).sort();
-      const sortedYears = Array.from(uniqueYears.entries()).sort();
-
-      setSponsors(sortedCompanies);
-      setDepartments(sortedDepartments);
-      setYears(sortedYears);
+      setSponsors(Array.from(uniqueCompanies.entries()).sort());
+      setDepartments(Array.from(uniqueDepartments.entries()).sort());
+      setYears(Array.from(uniqueYears.entries()).sort());
+      setLevels(Array.from(uniqueLevels.entries()).sort());
     };
 
     fetchUniqueValues();
   }, []);
+
   useEffect(() => {
     const handleLoad = async () => {
       try {
         let queryRef = query(collection(firestore, "projects"));
         if (selectedFilters.sponsor) {
-          // Update the filter to use "company" instead of "sponsor"
-          queryRef = query(
-            queryRef,
-            where("company", "==", selectedFilters.sponsor)
-          );
+          queryRef = query(queryRef, where("company", "==", selectedFilters.sponsor));
         }
         if (selectedFilters.department) {
-          queryRef = query(
-            queryRef,
-            where("department", "==", selectedFilters.department)
-          );
+          queryRef = query(queryRef, where("department", "==", selectedFilters.department));
         }
         if (selectedFilters.year) {
-          queryRef = query(
-            queryRef,
-            where("schoolYear", "==", selectedFilters.year)
-          );
+          queryRef = query(queryRef, where("schoolYear", "==", selectedFilters.year));
         }
-        // Add a filter for the "verified" field
+        if (selectedFilters.level) {
+          queryRef = query(queryRef, where("level", "==", selectedFilters.level));
+        }
         queryRef = query(queryRef, where("verified", "==", true));
-        // Limit the number of projects
         queryRef = query(queryRef, limit(projectsLimit));
+
         const documentSnapshot = await getDocs(queryRef);
-        const projects = documentSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const projects = documentSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setProjectData(projects);
       } catch (error) {
         console.error("Error loading projects:", error);
       }
     };
+
     handleLoad();
   }, [selectedFilters, projectsLimit]);
+
   const handleFilter = () => {
     const fuse = new Fuse(projectData, {
       keys: ["description", "title"],
       includeScore: true,
       threshold: 0.4,
     });
-    const searchResults = fuse.search(searchQuery);
-    setSearchResults(searchResults.map((result) => result.item));
+    const results = fuse.search(searchQuery);
+    setSearchResults(results.map((result) => result.item));
   };
+
   const handleFilterClick = () => {
     setSelectedFilters({
       sponsor: selectedSponsor,
       department: selectedDepartment,
       year: selectedYear,
+      level: selectedLevel,
     });
     handleFilter();
   };
+
   const handleLoadMore = () => {
     setProjectsLimit((prevLimit) => prevLimit + 12);
   };
+
   return (
     <div className="text-[#313144]">
       <form className="flex justify-center flex-wrap mt-12" action="#">
-        <div className="m-2 flex flex-col">
-          <label className="font-bold">EDUCATION LEVEL</label>
-          <select
-            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
-            value={selectedSponsor}
-            onChange={(e) => setSelectedSponsor(e.target.value)}
-          >
-            <option value="">All /TODO: IMPLEMENT FUNCTIONALITY</option>
-              <option>Undergraduate</option>
-              <option>Graduate</option>
-          </select>
-
-        </div>
+        {/* Sponsor Filter */}
         <div className="m-2 flex flex-col">
           <label className="font-bold">PARTNERS</label>
           <select
@@ -145,13 +119,13 @@ export const ProjectView = () => {
             onChange={(e) => setSelectedSponsor(e.target.value)}
           >
             <option value="">All</option>
-            {sponsors.map(([company, count]) => (
-              <option key={company} value={company}>
-                {`${company} (${count})`}
-              </option>
+            {sponsors.map(([company]) => (
+              <option key={company} value={company}>{company}</option>
             ))}
           </select>
         </div>
+
+        {/* Department Filter */}
         <div className="m-2 flex flex-col">
           <label className="font-bold">DEPARTMENTS</label>
           <select
@@ -160,13 +134,13 @@ export const ProjectView = () => {
             onChange={(e) => setSelectedDepartment(e.target.value)}
           >
             <option value="">All</option>
-            {departments.map(([department, count]) => (
-              <option key={department} value={department}>
-                {`${department} (${count})`}
-              </option>
+            {departments.map(([department]) => (
+              <option key={department} value={department}>{department}</option>
             ))}
           </select>
         </div>
+
+        {/* Year Filter */}
         <div className="m-2 flex flex-col">
           <label className="font-bold">YEAR</label>
           <select
@@ -175,13 +149,28 @@ export const ProjectView = () => {
             onChange={(e) => setSelectedYear(e.target.value)}
           >
             <option value="">All</option>
-            {years.map(([year, count]) => (
-              <option key={year} value={year}>
-                {`${year} (${count})`}
-              </option>
+            {years.map(([year]) => (
+              <option key={year} value={year}>{year}</option>
             ))}
           </select>
         </div>
+
+        {/* Level Filter */}
+        <div className="m-2 flex flex-col">
+          <label className="font-bold">EDUCATION LEVEL</label>
+          <select
+            className="rounded-md border-[1.5px] border-[#C4C4C4] w-48 p-2 font-semibold text-sm"
+            value={selectedLevel}
+            onChange={(e) => setSelectedLevel(e.target.value)}
+          >
+            <option value="">All</option>
+            {levels.map(([level]) => (
+              <option key={level} value={level}>{level}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Search Filter */}
         <div className="m-2 flex flex-col">
           <label className="font-bold">SEARCH</label>
           <input
@@ -192,6 +181,8 @@ export const ProjectView = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
+
+        {/* Filter Button */}
         <div className="m-2 flex flex-col justify-end">
           <button
             className="rounded-md border-[1.5px] border-blue-600 bg-blue-600 hover-bg-transparent hover-text-blue-600 duration-300 w-48 p-2 font-semibold text-white cursor-pointer"
@@ -201,6 +192,8 @@ export const ProjectView = () => {
           </button>
         </div>
       </form>
+
+      {/* Project Display */}
       <div className="m-4 border-2 rounded-2xl flex flex-wrap justify-center">
         {searchResults.length > 0 ? (
           searchResults.map((project, i) => (
@@ -214,6 +207,8 @@ export const ProjectView = () => {
           <p>No search results found</p>
         )}
       </div>
+
+      {/* Load More Button */}
       {projectData.length >= projectsLimit && (
         <div className="flex justify-center mt-4">
           <button
