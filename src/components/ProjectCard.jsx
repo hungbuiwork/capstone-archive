@@ -84,21 +84,21 @@ const ProjectCard = ({ project }) => {
   }, []);
 
   return (
-    <div style={cardStyles} className="project-card border-2 border-green-600">
+    <div style={cardStyles} className="project-card border-2 border-white">
       <div>
         {/* back button */}
         <button
           onClick={() => window.history.back()}
-          className=" ml-12 mb-2  text-[#78B6FF] text-med  font-bold  alex-font tracking-wide hover:text-blue-800 duration-300 "
+          className=" ml-6 mb-3 text-[#78B6FF] text-med  font-bold  alex-font tracking-wide hover:text-blue-800 duration-300 "
         >
           &lt; BACK
         </button>
       </div>
 
-      <div className=" justify-center border-4 border-yellow-400">
-        <div className=" flex flex-row flex-wrap justify-between mb-4 border-2 border-orange-400">
+      <div className=" justify-center border-4 border-white">
+        <div className=" flex flex-row flex-wrap justify-between mb-4 border-2 border-white">
           {/*COLUMN 1 */}
-          <div className=" border-2 border-red-500 w-full md:w-64 ">
+          <div className=" border-2 border-white w-full md:w-64 ">
             {/* IMAGE*/}
             <div className="aspect-w-4 aspect-h-3 bg-white border-2 rounded-xl border-gray-300 overflow-hidden">
               {imageURL ? (
@@ -114,12 +114,12 @@ const ProjectCard = ({ project }) => {
               )}
             </div>
             {/*EXTERNAL LINKS*/}
-            <div className=" border-0 flex justify-center flex-wrap">
+            <div className=" border-0 flex flex-wrap mb-4 mt-4">
               {miscURL && (
                 <a
                   href={miscURL}
                   target="_self"
-                  className=" py-0 px-5   text-[#78B6FF] text-lg  font-bold  alex-font tracking-wide hover:text-blue-800 duration-300 "
+                  className=" ml-3 mr-2 py-0 px-0   text-[#78B6FF] text-lg  font-bold  alex-font tracking-wide hover:text-blue-800 duration-300 "
                 >
                   MISC
                 </a>
@@ -128,7 +128,7 @@ const ProjectCard = ({ project }) => {
                 <a
                   href={posterURL}
                   target="_self"
-                  className=" py-0 px-5   text-[#78B6FF] text-lg  font-bold  alex-font tracking-wide hover:text-blue-800 duration-300"
+                  className=" py-0 px-2   text-[#78B6FF] text-lg  font-bold  alex-font tracking-wide hover:text-blue-800 duration-300"
                 >
                   POSTER
                 </a>
@@ -137,7 +137,7 @@ const ProjectCard = ({ project }) => {
                 <a
                   href={slidesURL}
                   target="_self"
-                  className=" py-0 px-5  text-[#78B6FF] text-lg  font-bold  alex-font tracking-wide hover:text-blue-800 duration-300"
+                  className=" py-0 px-2  text-[#78B6FF] text-lg  font-bold  alex-font tracking-wide hover:text-blue-800 duration-300"
                 >
                   SLIDES
                 </a>
@@ -145,47 +145,69 @@ const ProjectCard = ({ project }) => {
             </div>
             {/* COURSE INFO*/}
 
-            <div className=" border-slate-300 border-0 flex flex-col justify-start">
+            <div className=" border-slate-300 border-0 flex flex-col justify-start ml-2">
               <h1 className="text-[#456386] alex-font uppercase text-med">
                 Team Members
               </h1>
               {teamMembers.map((member) => {
                 return (
-                  <span className=" text-sm uppercase font-sans font-semibold tracking-tighter">
+                  <span className=" text-base font-sans font-normal tracking-tighter -mt-1">
                     {member}
                   </span>
                 );
               })}
-              <h1 className="text-[#456386] alex-font uppercase text-med ">
+              <h1 className="text-[#456386] alex-font uppercase text-med mt-3 ">
+                {" "}
+                Partner Liaisons
+              </h1>
+              {liaisons.map((member) => {
+                return (
+                  <span className=" text-base font-sans font-normal tracking-tighter -mt-1">
+                    {member}
+                  </span>
+                );
+              })}
+              <h1 className="text-[#456386] alex-font uppercase text-med mt-3 ">
                 {" "}
                 Faculty Advisor
               </h1>
               {faculty.map((member) => {
                 return (
-                  <span className=" text-sm uppercase font-sans font-semibold tracking-tighter">
+                  <span className=" text-base font-sans font-normal tracking-tighter -mt-1">
                     {member}
                   </span>
                 );
               })}
-              <h1 className=" text-[#456386] alex-font uppercase text-med">
+              <h1 className=" text-[#456386] alex-font uppercase text-med mt-3 ">
                 Department Name
               </h1>
-              <h2 className=" text-sm uppercase font-sans font-semibold tracking-tighter">
+              <h2 className=" text-base font-sans font-normal tracking-tighter -mt-1">
                 {department}
               </h2>
-              <h1 className=" text-[#456386] alex-font uppercase text-med">
+              <h1 className=" text-[#456386] alex-font uppercase text-med mt-3 ">
                 Course
               </h1>
-              <h2 className=" text-sm uppercase font-sans font-semibold tracking-tighter">
+              <h2 className=" text-base font-sans font-normal tracking-tighter -mt-1">
                 {course}
+              </h2>
+              <h1 className=" text-[#456386] uppercase alex-font text-med mt-3 ">
+                Project Timeline
+              </h1>
+              <h2 className=" text-base font-sans font-normal tracking-tighter mb-1 -mt-1">
+                {schoolYear}
+              </h2>
+              <h2 className=" text-sm font-sans font-normal tracking-tighter -mt-1 ">
+                Start: {startQuarter}
+              </h2> <h2 className=" text-sm font-sans font-normal tracking-tighter -mt-1">
+                End: {endQuarter}
               </h2>
             </div>
           </div>
 
           {/* COLUMN 2*/}
-          <div className=" border-2 border-red-500 flex-1  ">
+          <div className=" border-2 border-white flex-1 ml-10 mr-10">
             {/*Discription and Video*/}
-            <div className=" border-2 border-black">
+            <div className=" border-2 border-white ">
               <h1 className=" text-sky-900 text-2xl  uppercase font-bold alex-font leading-7 tracking-wide ">
                 {projectName}
               </h1>
@@ -205,14 +227,14 @@ const ProjectCard = ({ project }) => {
                 {description}
               </p>
             </div>
-            <div className="">
+            <div className="mt-14">
               {videoURL !== "N/A" ? (
                 <div className="">
-                  <p className=" font-bold text-2xl">{videoName}</p>
+                  <p className=" text-[#456386] uppercase alex-font text-lg">{videoName}</p>
                   <iframe
                     title="Embedded Video"
-                    width="512"
-                    height="315"
+                    width="412"
+                    height="232"
                     src={videoURL}
                     frameBorder="0"
                     allowFullScreen
@@ -225,13 +247,14 @@ const ProjectCard = ({ project }) => {
           </div>
 
           {/*COLUMN 3*/}
-          <div className=" border-2 border-red-500 w-64  ">
+          <div className=" border-2 border-white w-64  ">
             <div className=" flex flex-col">
               {/* Suggested Content */}
               {otherProjectsByDepartment.length > 0 && (
-                <h1 className="text-sky-900 text-sm uppercase alex-font leading-7 tracking-wide mb-4 break-before-auto">
-                  Projects in "{department}"
+                <h1 className="text-[#508b9d] text-sm uppercase alex-font leading-2 tracking-wide mb-2">
+                  <span className=" text-sky-900 alex-font text-sm"> More projects in</span> {department}
                 </h1>
+
               )}
 
               {otherProjectsByDepartment.length > 0 &&
@@ -247,8 +270,8 @@ const ProjectCard = ({ project }) => {
                   );
                 })}
               {otherProjectsByCompany.length > 0 && (
-                <h1 className="text-sky-900 text-sm uppercase font-bold alex-font leading-7 tracking-wide">
-                  Projects partnered with "{companyName}"
+                <h1 className="text-[#508b9d] text-sm uppercase alex-font leading-2 tracking-wide mb-2 mt-8">
+                  <span className=" text-sky-900 alex-font text-sm"> More projects with</span> {companyName}
                 </h1>
               )}
               {otherProjectsByCompany.length > 0 &&
