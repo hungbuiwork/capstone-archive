@@ -41,7 +41,7 @@ export const Project = (props) => {
         </div>
       }
 
-      <h2 className=" text-center text-3xl font-extrabold">{data?.name}</h2>
+      <h2 className=" text-center text-3xl font-extrabold">{data?.name || data?.projectName}</h2>
       <p className="">{data?.summary || data?.description}</p>
     </a>
   );
