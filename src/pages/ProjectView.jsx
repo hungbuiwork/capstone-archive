@@ -5,6 +5,7 @@ import { Project } from "../components/Project";
 import Fuse from "fuse.js";
 
 export const ProjectView = () => {
+  // State variables for storing project data, selected filters, and search results
   const [projectData, setProjectData] = useState([]);
   const [selectedSponsor, setSelectedSponsor] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -19,15 +20,19 @@ export const ProjectView = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const [projectsLimit, setProjectsLimit] = useState(12);
 
+  // Effect hook to fetch unique values for filters on component mount
   useEffect(() => {
     const fetchUniqueValues = async () => {
+      // Maps to store unique values
       const uniqueCompanies = new Map();
       const uniqueDepartments = new Map();
       const uniqueYears = new Map();
       const uniqueLevels = new Map();
 
+      // Fetch all projects from Firestore
       const querySnapshot = await getDocs(collection(firestore, "projects"));
 
+      // Iterate over each document and update the unique value maps
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         if (data.company) {
@@ -44,6 +49,7 @@ export const ProjectView = () => {
         }
       });
 
+      // Update state with sorted arrays of unique values
       setSponsors(Array.from(uniqueCompanies.entries()).sort());
       setDepartments(Array.from(uniqueDepartments.entries()).sort());
       setYears(Array.from(uniqueYears.entries()).sort());
@@ -53,10 +59,14 @@ export const ProjectView = () => {
     fetchUniqueValues();
   }, []);
 
+  // Effect hook to load projects based on selected filters and limit
   useEffect(() => {
     const handleLoad = async () => {
       try {
+        // Start with a query for all projects
         let queryRef = query(collection(firestore, "projects"));
+
+        // Add where clauses for each selected filter
         if (selectedFilters.sponsor) {
           queryRef = query(queryRef, where("company", "==", selectedFilters.sponsor));
         }
@@ -69,9 +79,12 @@ export const ProjectView = () => {
         if (selectedFilters.level) {
           queryRef = query(queryRef, where("level", "==", selectedFilters.level));
         }
+
+        // Only include verified projects and limit the number of results
         queryRef = query(queryRef, where("verified", "==", true));
         queryRef = query(queryRef, limit(projectsLimit));
 
+        // Fetch the documents and update state with the results
         const documentSnapshot = await getDocs(queryRef);
         const projects = documentSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setProjectData(projects);
@@ -83,16 +96,21 @@ export const ProjectView = () => {
     handleLoad();
   }, [selectedFilters, projectsLimit]);
 
+  // Function to filter projects based on search query
   const handleFilter = () => {
+    // Initialize Fuse with the project data and search options
     const fuse = new Fuse(projectData, {
       keys: ["description", "title"],
       includeScore: true,
       threshold: 0.4,
     });
+
+    // Perform the search and update state with the results
     const results = fuse.search(searchQuery);
     setSearchResults(results.map((result) => result.item));
   };
 
+  // Function to update selected filters and trigger a search
   const handleFilterClick = () => {
     setSelectedFilters({
       sponsor: selectedSponsor,
@@ -103,9 +121,13 @@ export const ProjectView = () => {
     handleFilter();
   };
 
+  // Function to load more projects
   const handleLoadMore = () => {
     setProjectsLimit((prevLimit) => prevLimit + 12);
   };
+
+
+
 
   return (
     <div className="text-[#313144]">
