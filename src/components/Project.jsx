@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 export const Project = (props) => {
   /* Render only: 
   Title
@@ -14,8 +14,8 @@ export const Project = (props) => {
   }
 
   return (
-    <a
-      href={`/view/${id}`}
+    <Link
+      to={`/view/${id}`}
       className="xs:w-[80%] sm:w-[38%] lg:w-[25%] m-8 border-[2px] rounded-lg p-6 border-transparent shadow-none hover:shadow-[-1px_13px_74px_9px_rgba(3,10,40,0.28)] duration-300"
     >
       {!data && <p> Error: Could not load data</p>}
@@ -43,6 +43,6 @@ export const Project = (props) => {
 
       <h2 className=" text-center text-3xl font-extrabold">{data?.name || data?.projectName}</h2>
       <p className="">{data?.summary || data?.description}</p>
-    </a>
+    </Link>
   );
 };

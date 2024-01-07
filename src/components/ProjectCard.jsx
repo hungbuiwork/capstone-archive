@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { firestore } from "../firebase";
 import { collection, query, where, getDocs, limit } from "firebase/firestore";
-
+import { Link } from "react-router-dom";
 const cardStyles = {
   padding: "20px",
   margin: "0px",
@@ -260,13 +260,13 @@ const ProjectCard = ({ project }) => {
               {otherProjectsByDepartment.length > 0 &&
                 otherProjectsByDepartment.map((data) => {
                   return (
-                    <a
+                    <Link
                       key={data.id}
-                      href={`/view/${data.id}`}
+                      to={`/view/${data.id}`}
                       className="text-[#78B6FF] text-sm uppercase font-normal alex-font hover:text-blue-800 duration-300 whitespace-normal "
                     >
                       {data.name}
-                    </a>
+                    </Link>
                   );
                 })}
               {otherProjectsByCompany.length > 0 && (
@@ -277,13 +277,14 @@ const ProjectCard = ({ project }) => {
               {otherProjectsByCompany.length > 0 &&
                 otherProjectsByCompany.map((data) => {
                   return (
-                    <a
+                    <Link
+                    reloadDocument = {true}
                       key={data.id}
-                      href={`/view/${data.id}`}
+                      to={`/view/${data.id}`}
                       className=" text-[#78B6FF] text-sm uppercase font-thin alex-font tracking-wide hover:text-blue-800 duration-300 whitespace-normal"
                     >
                       {data.name}
-                    </a>
+                    </Link>
                   );
                 })}
             </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const Welcome = () => {
   return (
@@ -10,21 +11,21 @@ export const Welcome = () => {
         </h1>
 
         <div className=" m-auto font-bold m-4">
-          <a href="/submit">
+          <Link to="/submit">
             <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
               Submit a project
             </button>
-          </a>
-          <a href="/view">
+          </Link>
+          <Link to="/view">
             <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
               Find a project
             </button>
-          </a>
-          <a href="/verify">
+          </Link>
+          <Link to="/verify">
             <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
               Verify a project
             </button>
-          </a>
+          </Link>
           
         </div>
       </div>
