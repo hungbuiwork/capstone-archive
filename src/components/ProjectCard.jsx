@@ -212,11 +212,12 @@ const ProjectCard = ({ project }) => {
                 {projectName}
               </h1>
               {companyName && companyName !== "N/A" && (
-                <div className=" text-[#78B6FF] text-xl  font-bold uppercase alex-font leading-7 tracking-wide ">
+                
+               <div className=" text-[#78B6FF] text-xl  font-bold uppercase alex-font leading-7 tracking-wide ">
                   <span className="text-[#456386] alex-font text-lg">
                     PARTNER:
                   </span>{" "}
-                  {companyName}
+                  <a target="_blank" href={project?.companyURL} >{companyName}</a>
                 </div>
               )}
               <p className=" text-xl mt-3 font-sans font-normal tracking-tighter text-justify">
@@ -288,6 +289,7 @@ const ProjectCard = ({ project }) => {
                   );
                 })}
             </div>
+            <h1 className="text-red-500 font-bold border-2 border-red-500 text-sm p-4">Current Bug: Must refresh after clicking suggested projects above to actually load up new project info.</h1>
           </div>
         </div>
       </div>

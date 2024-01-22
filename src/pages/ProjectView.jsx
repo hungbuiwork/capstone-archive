@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { collection, query, where, getDocs, limit } from "firebase/firestore";
-import { firestore } from "../firebase";
+import { firestore, apiKey } from "../firebase";
 import { Project } from "../components/Project";
 import Fuse from "fuse.js";
 
@@ -85,7 +85,11 @@ export const ProjectView = () => {
         queryRef = query(queryRef, limit(projectsLimit));
 
         // Fetch the documents and update state with the results
-        const documentSnapshot = await getDocs(queryRef);
+        const documentSnapshot = await getDocs(queryRef, {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+          },
+        });
         const projects = documentSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setProjectData(projects);
       } catch (error) {
