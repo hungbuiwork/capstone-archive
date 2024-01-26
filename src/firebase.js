@@ -2,21 +2,23 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "@firebase/firestore";
-import { getStorage }from "firebase/storage";
+import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBM6N5juAkz41v0l_YiQKS6Vf_QB_Lx5pw",
-  authDomain: "capstone-archive.firebaseapp.com",
-  projectId: "capstone-archive",
-  storageBucket: "capstone-archive.appspot.com",
-  messagingSenderId: "269341507347",
-  appId: "1:269341507347:web:c63776e2fade8a13be64e6",
-  measurementId: "G-XYNE04K5Z0"
+  apiKey: "AIzaSyDS_M4KphVIZHQvDUibhsUIbFkSE7VbCYs",
+  authDomain: "winter-191-for-191.firebaseapp.com",
+  projectId: "winter-191-for-191",
+  storageBucket: "winter-191-for-191.appspot.com",
+  messagingSenderId: "361109017966",
+  appId: "1:361109017966:web:2a2588d677e88717511d7f",
+  measurementId: "G-GE2HZD1T89"
 };
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
