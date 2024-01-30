@@ -1,22 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-// import { Link } from "react-router-dom";
 
 
-
-
-
-// get email/password 
-// put into auth
-// if authentification give coniditions based on what account is used     
-
-//
-{/* <Link to="/welcome" if>
-                    <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
-                        Login
-                    </button>
-                </Link> */}
 
 export const Login = () => {
 
@@ -39,10 +25,17 @@ export const Login = () => {
 
             signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
                 // Signed in 
+                const userCheck = auth.currentUser.email;
                 const user = userCredential.user;
                 // New page direct 
-                console.log('Logged in');
-                navigate('/welcome');
+                console.log(userCheck);
+                console.log(user);
+
+                if (userCheck.endsWith('@admin.com')) {
+                    navigate('/verify');
+                } else {
+                    navigate('/submit');
+                }
             })
                 .catch((error) => {
                     console.log("NOT WORK")
