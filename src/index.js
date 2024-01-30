@@ -10,8 +10,8 @@ import {
 } from "react-router-dom";
 import { ProjectView } from './pages/ProjectView';
 import { Upload } from './pages/Upload';
-import { Welcome } from './pages/Welcome';
-import Home from './pages/home';
+// import { Welcome } from './pages/Welcome';
+// import Home from './pages/home';
 import { ProjectFull } from './components/ProjectFull';
 import { Head } from './sections/Head';
 import { VerifyProjects } from './pages/VerifyProjects';
@@ -24,6 +24,7 @@ const router = createHashRouter([
     path: "/",
     element: <div><Head></Head><ProjectView></ProjectView></div>
   },
+
   {
     path: "/login",
     element: <Login></Login>

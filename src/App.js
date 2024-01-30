@@ -1,6 +1,6 @@
 
 import './App.css';
-import AuthUser from './components/AuthUser';
+// import AuthUser from './components/AuthUser';
 import { ProjectView } from './pages/ProjectView';
 import { Upload } from './pages/Upload';
 import Home from './pages/home';
@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <Login></Login>
-      <AuthUser />
+      {/* <AuthUser /> */}
       <Home></Home>
       <hr></hr>
       <ProjectView></ProjectView>
