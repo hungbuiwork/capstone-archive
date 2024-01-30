@@ -16,16 +16,17 @@ import { ProjectFull } from './components/ProjectFull';
 import { Head } from './sections/Head';
 import { VerifyProjects } from './pages/VerifyProjects';
 import { ThankYou } from './pages/ThankYou';
+import { Login } from './pages/login';
 
 
 const router = createHashRouter([
   {
     path: "/",
-    element:  <Welcome></Welcome>
+    element: <div><Head></Head><ProjectView></ProjectView></div>
   },
   {
-    path: "/view",
-    element:  <div><Head></Head><ProjectView></ProjectView></div>
+    path: "/login",
+    element: <Login></Login>
   },
   {
     path: "/view/:projectID",
@@ -33,7 +34,7 @@ const router = createHashRouter([
   },
   {
     path: "/submit",
-    element:  <div><Head></Head><Upload></Upload></div>
+    element: <div><Head></Head><Upload></Upload></div>
   },
   {
     path: "/verify",

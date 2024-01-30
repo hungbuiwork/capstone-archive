@@ -1,6 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+
+// const auth = getAuth();
+// console.log(auth.currentUser)
+// onAuthStateChanged(auth, (user) => {
+//   if (user) {
+//     console.log("working")
+
+
+//   } else {
+//     console.log("not")
+
+
+//   }
+// });
+
 export const Welcome = () => {
   return (
     <div className=" w-full h-[100vh] flex flex-row justify-center">
@@ -26,7 +41,7 @@ export const Welcome = () => {
               Verify a project
             </button>
           </Link>
-          
+
         </div>
       </div>
     </div>
