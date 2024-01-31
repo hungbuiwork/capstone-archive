@@ -1,7 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Login } from "../pages/login";
+import { useState } from "react";
+
+
 
 export const Head = () => {
+
+  const [seen, setSeen] = useState(false)
+
+  function togglePop() {
+    setSeen(!seen);
+  };
+
+
   return (
     <div className="">
       <div className="border-2 border-white h-32 flex flex-col justify-center">
@@ -16,12 +28,12 @@ export const Head = () => {
 
               </div>
               <div className=" m-auto font-bold m-4">
-                <Link to="/submit">
+                <Link to="/login/submit">
                   <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
                     Submit a project
                   </button>
                 </Link>
-                <Link to="/verify">
+                <Link to="/login/verify">
                   <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
                     Verify a project
                   </button>

@@ -24,11 +24,6 @@ const router = createHashRouter([
     path: "/",
     element: <div><Head></Head><ProjectView></ProjectView></div>
   },
-
-  {
-    path: "/login",
-    element: <Login></Login>
-  },
   {
     path: "/view/:projectID",
     element: <div><Head></Head><ProjectFull></ProjectFull></div>
@@ -45,6 +40,10 @@ const router = createHashRouter([
     path: "/thankYou",
     element: <ThankYou></ThankYou>
   },
+  {
+    path: "/login/:type",
+    element: <Login></Login>,
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

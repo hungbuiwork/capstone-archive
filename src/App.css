@@ -24,8 +24,7 @@
   color: white;
 }
 
-hr {
-}
+hr {}
 
 .App-link {
   color: #61dafb;
@@ -35,6 +34,7 @@ hr {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

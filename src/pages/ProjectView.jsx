@@ -29,6 +29,8 @@ export const ProjectView = () => {
       const uniqueYears = new Map();
       const uniqueLevels = new Map();
 
+      console.log('start')
+
       // Fetch all projects from Firestore
       const querySnapshot = await getDocs(collection(firestore, "projects"));
 

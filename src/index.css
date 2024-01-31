@@ -24,7 +24,8 @@ code {
     monospace;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   @apply border-[#C4C4C4];
 }
-
