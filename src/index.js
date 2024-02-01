@@ -16,17 +16,28 @@ import { Head } from './sections/Head';
 import { VerifyProjects } from './pages/VerifyProjects';
 import { ThankYou } from './pages/ThankYou';
 import { Login } from './pages/login';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 
 const IndexWithRouter = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check authentication status here
-    // Set isAuthenticated to true if the user is authenticated
+    const auth = getAuth(); // gets firebase auth from index, NOTE use auth = getAuth() for any firebase interacitons
 
-    // NEED WAY TO TRACK AUTHENTIFICATION OR SOMETHING IDK
 
-    setIsAuthenticated(true);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in.
+        setIsAuthenticated(true);
+      } else {
+        // User is signed out.
+        setIsAuthenticated(false);
+      }
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   const router = createHashRouter([
