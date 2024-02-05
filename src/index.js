@@ -23,7 +23,7 @@ const IndexWithRouter = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const auth = getAuth(); // gets firebase auth from index, NOTE use auth = getAuth() for any firebase interacitons
+    const auth = getAuth(); // gets firebase auth from index, NOTE use auth = getAuth() for any firebase auth interacitons
 
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
