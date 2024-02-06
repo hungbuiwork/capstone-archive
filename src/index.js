@@ -18,6 +18,8 @@ import { ThankYou } from './pages/ThankYou';
 import { Login } from './pages/login';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Admin } from './pages/admin';
+import { Student } from './pages/student';
+import { Verifer } from './pages/verifier';
 
 const IndexWithRouter = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -58,8 +60,16 @@ const IndexWithRouter = () => {
       element: isAuthenticated ? <div><Head></Head><VerifyProjects></VerifyProjects></div> : <Navigate to="/" />
     },
     {
-      path: "/admin",
+      path: "/adminpage",
       element: isAuthenticated ? <div><Head></Head><Admin></Admin></div> : <Navigate to="/" />
+    },
+    {
+      path: "/studentpage",
+      element: isAuthenticated ? <div><Head></Head><Student></Student></div> : <Navigate to="/" />
+    },
+    {
+      path: "/verifierpage",
+      element: isAuthenticated ? <div><Head></Head><Verifer></Verifer></div> : <Navigate to="/" />
     },
     {
       path: "/thankYou",
