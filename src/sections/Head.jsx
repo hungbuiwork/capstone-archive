@@ -38,7 +38,6 @@ export const Head = () => {
                     Verify a project
                   </button>
                 </Link>
-
               </div>
             </a>
           </div>

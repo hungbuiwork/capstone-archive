@@ -49,7 +49,6 @@ export const Login = () => {
                 // Signed in 
                 const userCheck = auth.currentUser.email;
                 const user = userCredential.user;
-                console.log(auth)
                 // New page direct based on what page
                 const isValidUser = validUserDomains.some(domain => userCheck.endsWith(domain));
 

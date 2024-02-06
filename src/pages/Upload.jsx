@@ -5,21 +5,6 @@ import { getSchoolYears, uploadFile, departments, quarters } from '../firebaseUt
 import { FormItem } from '../components/FormItem';
 import { useNavigate } from 'react-router-dom';
 
-// const auth = getAuth();
-// const user = auth.currentUser;
-// if (user !== null) { 
-//     console.log("help")
-// }
-// onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//         console.log("User is logged in")
-
-//     } else {
-//         console.log("User is NOT logged in")
-
-//     }
-// });
-
 
 export const Upload = () => {
     // Refs for form inputs
