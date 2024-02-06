@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
-
 export const Login = () => {
 
     const params = useParams();
@@ -12,7 +11,7 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    if (params.type !== 'submit' && params.type !== 'verify' && params.type !== 'admin') {
+    if (params.type !== 'student' && params.type !== 'verify' && params.type !== 'admin') {
         navigate('/')
     }
 
@@ -29,14 +28,14 @@ export const Login = () => {
 
         let validUserDomains = ["admin.com"]
         let navigatePage = "/"
-        if (params.type === "submit") {
+        if (params.type === "student") {
             validUserDomains.push("student.com");
-            navigatePage = '/submit'
+            navigatePage = '/studentpage'
         } else if (params.type === "verify") {
             validUserDomains.push("verifier.com");
-            navigatePage = '/verify'
+            navigatePage = '/verifierpage'
         } else if (params.type === "admin") {
-            navigatePage = '/admin'
+            navigatePage = '/adminpage'
         }
 
 
@@ -77,30 +76,32 @@ export const Login = () => {
 
 
     return (
+        <body>
+            <div className="LoginForm">
+                <h1>{params.type} Login</h1>
+                <div id="login-email">
+                    <label htmlFor="email">Email:</label>
+                    <input type="email"
+                        id="email"
+                        className="email"
+                        value={email}
+                        onChange={handleEmailChange}
+                    />
+                </div>
+                <div id="login-password">
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        className="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                    />
+                </div>
+                <button onClick={handlelogin}>Login</button>
+            </div >
+        </body>
 
-        <div>
-            <h1>{params.type}Login</h1>
-            <div>
-                <label htmlFor="email">Email:</label>
-                <input type="email"
-                    id="email"
-                    className="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                />
-            </div>
-            <div>
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    id="password"
-                    className="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                />
-            </div>
-            <button onClick={handlelogin}>Login</button>
-        </div >
     )
 }
 

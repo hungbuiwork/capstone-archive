@@ -28,14 +28,19 @@ export const Head = () => {
 
               </div>
               <div className=" m-auto font-bold m-4">
-                <Link to="/login/submit">
+                <Link to="/login/student">
                   <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
-                    Submit a project
+                    Student
                   </button>
                 </Link>
                 <Link to="/login/verify">
                   <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
-                    Verify a project
+                    Verifier
+                  </button>
+                </Link>
+                <Link to="/login/admin">
+                  <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
+                    Admin
                   </button>
                 </Link>
               </div>

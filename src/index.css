@@ -29,3 +29,15 @@ select,
 textarea {
   @apply border-[#C4C4C4];
 }
+
+.LoginForm {
+  padding: 10%;
+}
+
+.student-main {
+  padding: 10%;
+}
+
+.admin-main {
+  padding: 10%;
+}
