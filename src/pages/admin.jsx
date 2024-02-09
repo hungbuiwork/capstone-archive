@@ -4,14 +4,9 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css"; // Import the CSS file
 import { AuthContext } from "../context/AuthContext";
 
-
 export const Admin = () => {
     const [department, setDepartment] = useState("");
     const [number, setNumber] = useState("");
-
-
-    const { currentUser, permissionLevel, accessLevel } = useContext(AuthContext)
-
 
     // Function to handle form submission
     const handleSubmit = (e) => {
