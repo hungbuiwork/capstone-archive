@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css"; // Import the CSS file
 
+// TODO MAKE THE POPUP INTO A COMPONENT FOR IMPORT 
 
 // WHAT TO ADD
 // on creation of a verifier should add a new collection of students under them 
@@ -25,19 +26,10 @@ import "reactjs-popup/dist/index.css"; // Import the CSS file
 // 5. Accept projects
 // 6. Add projects with comments
 export const Verifer = () => {
-const handleAdd = async (e) => {
-
-    }
-    {
 
 
-        return (
 
-            <div className="main" id="outer-container">
-                <div id="page-wrap">
-                    <h1>Verifier Page</h1>
-                </div>
-          
+
     const [department, setDepartment] = useState("");
     const [number, setNumber] = useState("");
 
