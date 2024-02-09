@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import SideMenu from "../components/NavigationMenu";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css"; // Import the CSS file
+import { AuthContext } from "../context/AuthContext";
 
 export const Admin = () => {
     const [department, setDepartment] = useState("");
@@ -21,7 +22,6 @@ export const Admin = () => {
         <div className="main" id="outer-container">
             <div id="page-wrap">
                 <h1>Admin Page</h1>
-                <SideMenu />
                 <Popup
                     trigger={<button>Create New Verifier</button>}
                     modal
