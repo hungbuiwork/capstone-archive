@@ -77,8 +77,8 @@ export const Login = () => {
     return (
 
         <div className="LoginForm">
-            <h1 className="LoginTitle">Login with UCI Email</h1>
-            <div className="LoginEmail">
+            <h1 id="LoginTitle">Login with UCI Email</h1>
+            <div id="login-email">
                 <label htmlFor="email">UCI Email:</label>
                 <input type="email"
                     id="email"
@@ -87,7 +87,7 @@ export const Login = () => {
                     onChange={handleEmailChange}
                 />
             </div>
-            <div className="LoginPassword">
+            <div id="login-password">
                 <label htmlFor="password">Password:</label>
                 <input
                     type="password"
@@ -97,7 +97,7 @@ export const Login = () => {
                     onChange={handlePasswordChange}
                 />
             </div>
-            <button className="LoginButton" onClick={handlelogin}>Login</button>
+            <button id="LoginButton" onClick={handlelogin}>Login</button>
         </div >
 
 
