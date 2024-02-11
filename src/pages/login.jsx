@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
+import './login-styles.css'; 
 
 
 export const Login = () => {
@@ -76,7 +77,7 @@ export const Login = () => {
     return (
 
         <div className="LoginForm">
-            <h1>Login</h1>
+            <h1 className="LoginTitle">Login with UCI Email</h1>
             <div id="login-email">
                 <label htmlFor="email">Email:</label>
                 <input type="email"
