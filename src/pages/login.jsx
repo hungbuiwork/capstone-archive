@@ -78,8 +78,8 @@ export const Login = () => {
 
         <div className="LoginForm">
             <h1 className="LoginTitle">Login with UCI Email</h1>
-            <div id="login-email">
-                <label htmlFor="email">Email:</label>
+            <div className="LoginEmail">
+                <label htmlFor="email">UCI Email:</label>
                 <input type="email"
                     id="email"
                     className="email"

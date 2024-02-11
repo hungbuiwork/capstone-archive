@@ -22,3 +22,22 @@
     
 }
 
+.LoginEmail, .LoginPassword {
+    position: absolute;
+    width: 73px;
+    height: 38px;
+    left: 538px;
+    top: 345px;
+    
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    
+    color: rgba(0, 0, 0, 0.25);
+
+    white-space: nowrap; /* One line */
+    
+
+}
