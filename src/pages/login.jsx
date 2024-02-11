@@ -87,7 +87,7 @@ export const Login = () => {
                     onChange={handleEmailChange}
                 />
             </div>
-            <div id="login-password">
+            <div className="LoginPassword">
                 <label htmlFor="password">Password:</label>
                 <input
                     type="password"
@@ -97,7 +97,7 @@ export const Login = () => {
                     onChange={handlePasswordChange}
                 />
             </div>
-            <button onClick={handlelogin}>Login</button>
+            <button className="LoginButton" onClick={handlelogin}>Login</button>
         </div >
 
 
