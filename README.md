@@ -10,7 +10,3 @@ Download link: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 3. to get into the folder, run --> cd [folder name]
 4. to install dependencies, run --> npm install
 5. run the project --> npm run start
-
-
-testing
-test2
