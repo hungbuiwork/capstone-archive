@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -20,71 +20,70 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Admin } from './pages/admin';
 import { Student } from './pages/student';
 import { Verifer } from './pages/verifier';
+import { AuthContext, AuthContextProvider } from './context/AuthContext';
+
+
+const CheckVerification = ({ element, requiredPermission }) => {
+  const { currentUser, permissionLevel, accessLevel } = useContext(AuthContext)
+
+  if (permissionLevel !== null && requiredPermission === accessLevel) {
+    // Redirect to login or another fallback path
+    return element;
+  } else { return <Navigate to={"/login"} replace />; }
+}
 
 const IndexWithRouter = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const auth = getAuth(); // gets firebase auth from index, NOTE use auth = getAuth() for any firebase auth interacitons
 
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in.
-        setIsAuthenticated(true);
-      } else {
-        // User is signed out.
-        setIsAuthenticated(false);
-      }
-    });
+  // current user is broken and returns undefined 
+  //
 
-    // Clean up the subscription when the component unmounts
-    return () => unsubscribe();
-  }, []);
-
+  // function to 
   const router = createHashRouter([
     {
       path: "/",
-      element: <div><Head></Head><ProjectView></ProjectView></div>
+      element: <div><Head></Head><ProjectView /></div>
     },
     {
       path: "/view/:projectID",
-      element: <div><Head></Head><ProjectFull></ProjectFull></div>
+      element: <div><Head></Head><ProjectFull /></div>
     },
     {
       path: "/submit",
-      element: isAuthenticated ? <div><Head></Head><Upload></Upload></div> : <Navigate to="/" />
+      element: <div><Head></Head><Upload /></div>
     },
     {
       path: "/verify",
-      element: isAuthenticated ? <div><Head></Head><VerifyProjects></VerifyProjects></div> : <Navigate to="/" />
+      element: <div><Head></Head><VerifyProjects /></div>
     },
     {
       path: "/adminpage",
-      element: isAuthenticated ? <div><Head></Head><Admin></Admin></div> : <Navigate to="/" />
-    },
-    {
-      path: "/studentpage",
-      element: isAuthenticated ? <div><Head></Head><Student></Student></div> : <Navigate to="/" />
+      element: <CheckVerification element={<div><Head></Head><Admin /></div>} requiredPermission={2} />
     },
     {
       path: "/verifierpage",
-      element: isAuthenticated ? <div><Head></Head><Verifer></Verifer></div> : <Navigate to="/" />
+      element: <CheckVerification element={<div><Head></Head><Verifer /></div>} requiredPermission={1} />
+    },
+    {
+      path: "/studentpage",
+      element: <CheckVerification element={<div><Head></Head><Student /></div>} requiredPermission={0} />
     },
     {
       path: "/thankYou",
       element: <ThankYou></ThankYou>
     },
     {
-      path: "/login/:type",
+      path: "/login",
       element: <Login></Login>,
     }
   ]);
 
   return (
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
+    <AuthContextProvider>
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>
+    </AuthContextProvider>
   );
 };
 

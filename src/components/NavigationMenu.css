@@ -1,0 +1,34 @@
+/* SideMenu.css */
+.side-menu {
+    width: 200px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    padding: 20px;
+    color: #fff;
+}
+
+.side-menu h2 {
+    margin-bottom: 20px;
+}
+
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side-menu li {
+    margin-bottom: 10px;
+}
+
+.side-menu a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.side-menu a:hover {
+    color: #ffcc00;
+}

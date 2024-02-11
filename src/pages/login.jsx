@@ -1,19 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { AuthContext } from "../context/AuthContext";
 
 
 export const Login = () => {
 
-    const params = useParams();
+    // const params = useParams();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
-    if (params.type !== 'student' && params.type !== 'verify' && params.type !== 'admin') {
-        navigate('/')
-    }
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -23,22 +20,10 @@ export const Login = () => {
         setPassword(e.target.value);
     };
 
-    const handlelogin = () => {
-        // TODO FIXXXXXXX
+    const { dispatch } = useContext(AuthContext)
 
-        let validUserDomains = ["admin.com"]
-        let navigatePage = "/"
-        if (params.type === "student") {
-            validUserDomains.push("student.com");
-            navigatePage = '/studentpage'
-        } else if (params.type === "verify") {
-            validUserDomains.push("verifier.com");
-            navigatePage = '/verifierpage'
-        } else if (params.type === "admin") {
-            navigatePage = '/adminpage'
-        }
-
-
+    const handlelogin = (e) => {
+        e.preventDefault();
 
         if (email && password) {
 
@@ -46,19 +31,32 @@ export const Login = () => {
 
             signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
                 // Signed in 
+                let navigatePage = "/"
+                let permissionLevel = -1;
                 const userCheck = auth.currentUser.email;
                 const user = userCredential.user;
-                // New page direct based on what page
-                const isValidUser = validUserDomains.some(domain => userCheck.endsWith(domain));
-
-                if (isValidUser) {
-                    console.log(navigatePage)
-                    navigate(navigatePage);
-                } else {
-                    // TODO 
-                    console.log("Invalid credentials ")
-                    console.log("Popup for incorrect credentials/something")
+                // checking the user permissions based on domain end
+                if (userCheck.endsWith("student.com")) {
+                    navigatePage = "/studentpage"
+                    permissionLevel = 0
+                } else if (userCheck.endsWith("verifier.com")) {
+                    navigatePage = "/verifierpage"
+                    permissionLevel = 1
+                } else if (userCheck.endsWith("admin.com")) {
+                    navigatePage = "/adminpage"
+                    permissionLevel = 2
                 }
+
+                // Set context for app
+                // dispatch({ type: "MAINLOGIN", payload: user })
+
+                dispatch({ type: "MAINLOGIN", payload: user })
+
+                dispatch({ type: "PERMISSION_LEVEL", payload: user })
+
+                // Navigate to different page depending on the user. 
+                navigate(navigatePage)
+
             })
                 .catch((error) => {
                     console.log("NOT WORK")
@@ -76,31 +74,31 @@ export const Login = () => {
 
 
     return (
-        <body>
-            <div className="LoginForm">
-                <h1>{params.type} Login</h1>
-                <div id="login-email">
-                    <label htmlFor="email">Email:</label>
-                    <input type="email"
-                        id="email"
-                        className="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                    />
-                </div>
-                <div id="login-password">
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        className="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                    />
-                </div>
-                <button onClick={handlelogin}>Login</button>
-            </div >
-        </body>
+
+        <div className="LoginForm">
+            <h1>Login</h1>
+            <div id="login-email">
+                <label htmlFor="email">Email:</label>
+                <input type="email"
+                    id="email"
+                    className="email"
+                    value={email}
+                    onChange={handleEmailChange}
+                />
+            </div>
+            <div id="login-password">
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    className="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                />
+            </div>
+            <button onClick={handlelogin}>Login</button>
+        </div >
+
 
     )
 }

@@ -28,21 +28,21 @@ export const Head = () => {
 
               </div>
               <div className=" m-auto font-bold m-4">
-                <Link to="/login/student">
+                <Link to="/login">
                   <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
-                    Student
+                    Login
                   </button>
                 </Link>
-                <Link to="/login/verify">
+                {/* <Link to="/verifierpage">
                   <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
                     Verifier
                   </button>
                 </Link>
-                <Link to="/login/admin">
+                <Link to="/adminpage">
                   <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
                     Admin
                   </button>
-                </Link>
+                </Link> */}
               </div>
             </a>
           </div>

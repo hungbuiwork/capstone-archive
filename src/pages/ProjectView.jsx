@@ -5,6 +5,8 @@ import { Project } from "../components/Project";
 import Fuse from "fuse.js";
 
 export const ProjectView = () => {
+
+
   // State variables for storing project data, selected filters, and search results
   const [projectData, setProjectData] = useState([]);
   const [selectedSponsor, setSelectedSponsor] = useState("");
