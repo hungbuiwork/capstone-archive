@@ -28,21 +28,27 @@
     height: 50px;
     left: 523px;
     top: 329px;
-    
+    /* placeholder text */
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 16px;
     line-height: 19px;
-    
-    color: rgba(0, 0, 0, 0.25);
+    color: #000103; 
+ 
+     /* border */
     border: 1px solid rgba(51, 51, 51, 0.2);
     border-radius: 16px;
     white-space: nowrap; /* One line */
-    padding-top: 14px;
     padding-left: 13px 
     
 }
+
+/* #login-email::placeholder, #login-password::placeholder {
+    color: rgba(11, 10, 10, 0.947); 
+    font-weight: 800; 
+} */
+
 
 #login-password {
 

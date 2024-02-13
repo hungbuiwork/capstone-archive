@@ -78,11 +78,12 @@ export const Login = () => {
 
         <div className="LoginForm">
             <h1 id="LoginTitle">Login with UCI Email</h1>
-            <div id="login-email">
-                <label htmlFor="email">UCI Email:</label>
+            <div>
                 <input type="email"
-                    id="email"
-                    className="email"
+                    id="login-email"
+                    // id="email"
+                    // className="email"
+                    placeholder="UCI Email:"
                     value={email}
                     onChange={handleEmailChange}
                 />
