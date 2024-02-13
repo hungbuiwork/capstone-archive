@@ -88,11 +88,10 @@ export const Login = () => {
                     onChange={handleEmailChange}
                 />
             </div>
-            <div id="login-password">
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    id="password"
+            <div>
+                <input type="password"
+                    id="login-password"
+                    placeholder="Password"
                     className="password"
                     value={password}
                     onChange={handlePasswordChange}
