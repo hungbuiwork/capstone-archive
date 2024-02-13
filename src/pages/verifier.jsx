@@ -47,7 +47,6 @@ export const Verifer = () => {
         <div className="main" id="outer-container">
             <div id="page-wrap">
                 <h1>Verifier Page</h1>
-                <SideMenu />
                 <Popup
                     trigger={<button>Create New Student</button>}
                     modal
