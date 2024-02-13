@@ -81,8 +81,6 @@ export const Login = () => {
             <div>
                 <input type="email"
                     id="login-email"
-                    // id="email"
-                    // className="email"
                     placeholder="UCI Email:"
                     value={email}
                     onChange={handleEmailChange}
