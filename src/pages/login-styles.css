@@ -15,6 +15,21 @@
 
 }
 
+#uci-text {
+    position: absolute;
+    /* left: calc(50% - 470px/2); */
+    /* right: 53.37%; */
+    top: -75px;
+    bottom: 0%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 77px;
+    text-align: center;
+    color: #0064A4;
+}
+
 #LoginTitle {
     position: absolute;
     left: 50%;

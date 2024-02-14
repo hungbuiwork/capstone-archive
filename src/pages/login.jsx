@@ -77,6 +77,7 @@ export const Login = () => {
     return (
 
         <div className="LoginForm">
+            <div id="uci-text">UCI</div>
             <h1 id="LoginTitle">Welcome!</h1>
             <p id="SignInSubtitle">Sign in to explore more.</p>
 
