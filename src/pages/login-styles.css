@@ -1,4 +1,5 @@
 /* login-styles.css */
+@import url('https://fonts.googleapis.com/css?family=Jomolhari');
 
 .LoginForm {
 
@@ -18,17 +19,17 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 30px;
+    top: 15px;
     white-space: nowrap; /* One line */
     /* text */
-    font-family: 'Inter';
+    font-family: 'Jomolhari';
     font-style: normal;
-    font-weight: 800;
-    font-size: 28px;
-    line-height: 29px;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 38px;
     text-align: center;
     
-    color: #000000;
+    color: #0064A4;
     
 }
 
@@ -91,8 +92,8 @@ left: 50%;
 transform: translateX(-50%);
 width: 150px;
 height: 50px;
-top: 275px;
-/* Login text */
+top: 310px;
+/* Sign in text */
 font-family: 'Inter';
 font-style: normal;
 font-weight: 700;

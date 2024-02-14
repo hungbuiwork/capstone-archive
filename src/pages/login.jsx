@@ -77,7 +77,7 @@ export const Login = () => {
     return (
 
         <div className="LoginForm">
-            <h1 id="LoginTitle">Login with UCI Email</h1>
+            <h1 id="LoginTitle">Welcome!</h1>
             <div>
                 <input type="email"
                     id="login-email"
