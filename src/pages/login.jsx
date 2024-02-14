@@ -78,6 +78,8 @@ export const Login = () => {
 
         <div className="LoginForm">
             <h1 id="LoginTitle">Welcome!</h1>
+            <p id="SignInSubtitle">Sign in to explore more</p>
+
             <div>
                 <input type="email"
                     id="login-email"
