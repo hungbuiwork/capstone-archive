@@ -17,7 +17,7 @@
 
 #uci-text {
     position: absolute;
-    /* left: calc(50% - 470px/2); */
+    left: 80px;
     /* right: 53.37%; */
     top: -75px;
     bottom: 0%;
@@ -29,6 +29,34 @@
     text-align: center;
     color: #0064A4;
 }
+
+
+
+#capstone-text { 
+    position: absolute;
+    left: 220px;
+    top: -75px;
+    bottom: 49.59%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 36px;
+    color: #79B7FF;
+}
+
+#achive-text {
+    position: absolute;
+    left: 220px;
+    top: -45px;
+    bottom: 49.59%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 23px;
+    line-height: 36px;
+    color: #79B7FF;
+} 
 
 #LoginTitle {
     position: absolute;
