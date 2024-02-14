@@ -95,7 +95,7 @@ export const Login = () => {
                     onChange={handlePasswordChange}
                 />
             </div>
-            <button id="LoginButton" onClick={handlelogin}>Login</button>
+            <button id="LoginButton" onClick={handlelogin}>SIGN IN</button>
         </div >
 
 
