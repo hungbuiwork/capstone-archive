@@ -90,6 +90,7 @@ export const Login = () => {
                 />
             </div>
             <div>
+                <label for="login-password">Password</label>
                 <input type="password"
                     id="login-password"
                     placeholder="Password"
