@@ -1,13 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Login } from "../pages/login";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 
 
 
 export const Head = () => {
 
   const [seen, setSeen] = useState(false)
+  let nav = "/login"
+
+  const { currentUser, permissionLevel, accessLevel } = useContext(AuthContext)
+  if (permissionLevel !== null) {
+    if (accessLevel === 0) {
+      nav = "/studentpage"
+    } else if (accessLevel === 1) {
+      nav = "/verifierpage"
+    } else if (accessLevel === 2) {
+      nav = "/adminpage"
+    }
+
+  }
 
   function togglePop() {
     setSeen(!seen);
@@ -28,21 +43,11 @@ export const Head = () => {
 
               </div>
               <div className=" m-auto font-bold m-4">
-                <Link to="/login">
+                <Link to={nav}>
                   <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
                     Login
                   </button>
                 </Link>
-                {/* <Link to="/verifierpage">
-                  <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
-                    Verifier
-                  </button>
-                </Link>
-                <Link to="/adminpage">
-                  <button className=" border-2 border-slate-800 text-slate-800 p-2 rounded-md m-4 hover:text-white hover:bg-slate-900 text-lg duration-300 relative top-0 hover:top-2">
-                    Admin
-                  </button>
-                </Link> */}
               </div>
             </a>
           </div>

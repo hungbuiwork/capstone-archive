@@ -8,6 +8,7 @@ import './login-styles.css';
 export const Login = () => {
 
     // const params = useParams();
+    let navigatePage = "/"
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -23,8 +24,13 @@ export const Login = () => {
 
     const { dispatch } = useContext(AuthContext)
 
+
+
     const handlelogin = (e) => {
         e.preventDefault();
+
+
+
 
         if (email && password) {
 
@@ -32,7 +38,6 @@ export const Login = () => {
 
             signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
                 // Signed in 
-                let navigatePage = "/"
                 let permissionLevel = -1;
                 const userCheck = auth.currentUser.email;
                 const user = userCredential.user;

@@ -25,7 +25,6 @@ import { AuthContext, AuthContextProvider } from './context/AuthContext';
 
 const CheckVerification = ({ element, requiredPermission }) => {
   const { currentUser, permissionLevel, accessLevel } = useContext(AuthContext)
-
   if (permissionLevel !== null && requiredPermission === accessLevel) {
     // Redirect to login or another fallback path
     return element;
