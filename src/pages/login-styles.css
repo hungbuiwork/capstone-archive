@@ -85,8 +85,19 @@ label[for="login-email"] {
     
 }
 
-
-
+label[for="login-password"] {
+    display: block;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000103;
+    margin-bottom: 8px; /* Adjust based on your layout */
+    position: absolute;
+    left: 80px;  /*Adjust "UCI Email"*/
+    transform: translateX(-50%);
+    top: 200px; /* Adjust the position to place it above the input field */
+}
 
 #login-password {
     /* border */
