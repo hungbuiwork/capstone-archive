@@ -80,7 +80,6 @@ export const Login = () => {
             <div id="uci-text">UCI</div>
             <div id="capstone-text">CAPSTONE</div>
             <div id="achive-text">ARCHIVE</div>
-
             <h1 id="LoginTitle">Welcome!</h1>
             <p id="SignInSubtitle">Sign in to explore more.</p>
 
