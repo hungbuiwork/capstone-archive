@@ -81,9 +81,10 @@ export const Login = () => {
             <p id="SignInSubtitle">Sign in to explore more.</p>
 
             <div>
+                <label for="login-email">UCI Email</label>
                 <input type="email"
                     id="login-email"
-                    placeholder="UCI Email:"
+                    placeholder="Example@uci.edu"
                     value={email}
                     onChange={handleEmailChange}
                 />
