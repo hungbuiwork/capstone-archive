@@ -8,9 +8,9 @@ import './admin-styles.css';
 export const Admin = () => {
 
     return (
-        <div className="main" id="outer-container">
+        <div className="main-background" id="outer-container">
             <div id="page-wrap">
-                <h1>Welcome Admin!</h1>
+                <h1 className="welcome-text" >Welcome Admin!</h1>
                 <VerifierPopup />
 
 
