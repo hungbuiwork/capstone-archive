@@ -9,7 +9,7 @@ export const Admin = () => {
     return (
         <div className="main" id="outer-container">
             <div id="page-wrap">
-                <h1>Admin Page</h1>
+                <h1>Welcome Admin!</h1>
                 <VerifierPopup />
 
 
