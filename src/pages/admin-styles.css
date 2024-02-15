@@ -1,0 +1,53 @@
+.welcome-text {
+/* Welcome Admin! */
+   position: absolute;
+   width: 395px;
+   height: 55px;
+   left: -100px;
+   top: -65px;
+
+
+   font-family: 'Inter';
+   font-style: normal;
+   font-weight: 900;
+   font-size: 32px;
+   line-height: 39px;
+   text-align: center;
+   color: #317EAC;
+
+
+}
+
+
+.main-background {
+   position: absolute;
+   width: 1233px;
+   height: 649px;
+   left: 100px;
+   top: 200px;
+   background: #F4F4F4;
+}
+
+
+.add-verifier {
+   /* Blue button  */
+   position: absolute;
+   width: 115px;
+   height: 42px;
+   left: 800px;
+   top: 10%;
+   background: #0064A4;
+   border-radius: 16px;
+   border: 1px solid rgba(51, 51, 51, 0.2);
+
+
+   /* Add Verifier */
+   position: absolute;
+   font-family: 'Inter';
+   font-style: normal;
+   font-weight: 900;
+   font-size: 12px;
+   line-height: 15px;
+   color: #FFFFFF;
+}
+

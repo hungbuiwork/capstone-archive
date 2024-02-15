@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
+import './login-styles.css'; 
 
 
 export const Login = () => {
@@ -81,27 +82,32 @@ export const Login = () => {
     return (
 
         <div className="LoginForm">
-            <h1>Login</h1>
-            <div id="login-email">
-                <label htmlFor="email">Email:</label>
+            <div id="uci-text">UCI</div>
+            <div id="capstone-text">CAPSTONE</div>
+            <div id="achive-text">ARCHIVE</div>
+            <h1 id="LoginTitle">Welcome!</h1>
+            <p id="SignInSubtitle">Sign in to explore more.</p>
+
+            <div>
+                <label for="login-email">UCI Email</label>
                 <input type="email"
-                    id="email"
-                    className="email"
+                    id="login-email"
+                    placeholder="Example@uci.edu"
                     value={email}
                     onChange={handleEmailChange}
                 />
             </div>
-            <div id="login-password">
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    id="password"
+            <div>
+                <label for="login-password">Password</label>
+                <input type="password"
+                    id="login-password"
+                    placeholder="Password"
                     className="password"
                     value={password}
                     onChange={handlePasswordChange}
                 />
             </div>
-            <button onClick={handlelogin}>Login</button>
+            <button id="LoginButton" onClick={handlelogin}>SIGN IN</button>
         </div >
 
 

@@ -1,0 +1,188 @@
+/* login-styles.css */
+@import url('https://fonts.googleapis.com/css?family=Jomolhari');
+
+.LoginForm {
+
+    position: absolute;
+    width: 470px;
+    height: 380px;
+    left: calc(50% - 470px/2);
+    top: 226px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+
+
+}
+
+#uci-text {
+    position: absolute;
+    left: 80px;
+    /* right: 53.37%; */
+    top: -75px;
+    bottom: 0%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 77px;
+    text-align: center;
+    color: #0064A4;
+}
+
+
+
+#capstone-text { 
+    position: absolute;
+    left: 220px;
+    top: -70px;
+    bottom: 49.59%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 36px;
+    color: #79B7FF;
+}
+
+#achive-text {
+    position: absolute;
+    left: 220px;
+    top: -40px;
+    bottom: 49.59%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 23px;
+    line-height: 36px;
+    color: #AED3FF;
+} 
+
+#LoginTitle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 15px;
+    white-space: nowrap; /* One line */
+    /* text welcome */
+    font-family: 'Jomolhari';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 38px;
+    text-align: center;
+    
+    color: #0064A4;
+    
+}
+
+#SignInSubtitle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 60px; /* Adjust this value based on the exact positioning you want */
+    font-family: 'Inter'; 
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px; 
+    color: rgba(0, 0, 0, 0.56);
+    text-align: center;
+}
+
+label[for="login-email"] {
+    display: block;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000103;
+    margin-bottom: 8px; /* Adjust based on your layout */
+    position: absolute;
+    left: 80px;  /*Adjust "UCI Email"*/
+    transform: translateX(-50%);
+    top: 105px; /* Adjust the position to place it above the input field */
+}
+
+
+#login-email {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 50px;
+    top: 130px;
+    /* placeholder text */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #000103; 
+ 
+     /* border */
+    border: 1px solid rgba(51, 51, 51, 0.2);
+    border-radius: 6px;
+    white-space: nowrap; /* One line */
+    padding-left: 13px 
+    
+}
+
+label[for="login-password"] {
+    display: block;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000103;
+    margin-bottom: 8px; /* Adjust based on your layout */
+    position: absolute;
+    left: 80px;  /*Adjust "UCI Email"*/
+    transform: translateX(-50%);
+    top: 200px; /* Adjust the position to place it above the input field */
+}
+
+#login-password {
+    /* border */
+    border: 1px solid rgba(51, 51, 51, 0.2);
+    border-radius: 6px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 50px;
+    top: 225px;
+    /* placeholder text */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #000103;
+
+    white-space: nowrap; /* One line */
+    padding-left: 13px 
+
+    }
+
+#LoginButton {
+/* Login in button */
+position: absolute;
+background: #AED3FF;
+border: 1px solid rgba(51, 51, 51, 0.2);
+border-radius: 16px;
+left: 50%;
+transform: translateX(-50%);
+width: 150px;
+height: 50px;
+top: 310px;
+/* Sign in text */
+font-family: 'Inter';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 19px;
+text-align: center;
+color: #0064A4;
+
+}

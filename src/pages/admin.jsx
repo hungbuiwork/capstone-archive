@@ -3,13 +3,14 @@ import SideMenu from "../components/NavigationMenu";
 import "reactjs-popup/dist/index.css"; // Import the CSS file
 import { AuthContext } from "../context/AuthContext";
 import VerifierPopup from "../components/CreateNewVerifier.jsx"
+import './admin-styles.css'; 
 
 export const Admin = () => {
 
     return (
-        <div className="main" id="outer-container">
+        <div className="main-background" id="outer-container">
             <div id="page-wrap">
-                <h1>Admin Page</h1>
+                <h1 className="welcome-text" >Welcome Admin!</h1>
                 <VerifierPopup />
 
 

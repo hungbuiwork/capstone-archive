@@ -3,7 +3,7 @@ import Popup from 'reactjs-popup';
 import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { firestore } from "../firebase"
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-
+import '../pages/admin-styles.css'; 
 const VerifierPopup = () => {
     const auth = getAuth()
     const [department, setDepartment] = useState('');
@@ -64,7 +64,7 @@ const VerifierPopup = () => {
     };
 
     return (
-        <Popup trigger={<button>Create New Verifier</button>} modal closeOnDocumentClick>
+        <Popup trigger={<button className='add-verifier'>Add Verifier</button>} modal closeOnDocumentClick>
             <div className="pop-up">
                 <h2>New Verifier</h2>
                 <form onSubmit={handleSubmit}>
